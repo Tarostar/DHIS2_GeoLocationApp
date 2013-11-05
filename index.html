@@ -11,14 +11,40 @@
       <script src="../../assets/js/html5shiv.js"></script>
       <script src="../../assets/js/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+		html,body {
+	        height: 100%;
+		}
+	
+		#map-canvas {
+	        height: 50%;
+	        padding-right: 15px;
+	        padding-left: 15px;
+	        margin-right: auto;
+	        margin-left: auto;
+	        width: 80%;
+		}
+	</style>
+
   </head>
   <body>
     <h1>Hello, world! Test. Test.</h1>
-
+    <div id="map-canvas" class="container map"></div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/geo.js"></script>
+
+    <script>
+	$(document).ready(function() {
+		initialize_map();
+	});
+	</script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+
   </body>
 </html>
 
