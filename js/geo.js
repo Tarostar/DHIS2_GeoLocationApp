@@ -60,7 +60,7 @@ function gotErr(error) {
 function get_location() {
 	if (Modernizr.geolocation) {
 		// Find location... fill in.
-		alert("location");
+		alert("modernizr")
 
 		//navigator.geolocation.getCurrentPosition(location_found);
 		
@@ -99,7 +99,6 @@ function location_found(position) {
 }
 
 function eventClickFunction(){
-	alert("event");
 	get_location();
 }
 	
