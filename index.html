@@ -26,6 +26,8 @@
 	        width: 80%;
 		}
 	</style>
+	
+	<script src="js/geo.js"></script>
 
   </head>
   <script>
@@ -64,7 +66,6 @@
     <script src="//code.jquery.com/jquery.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.js"></script>
-    <script src="js/geo.js"></script>
 
     <script>
 	$(document).ready(function() {
@@ -72,7 +73,12 @@
 	});
 	</script>
 
+	<!-- google map for selection and showin location -->
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+    
+    <!-- button for user to create new event, should open the form for the users unit with location-->
+    <!-- TODO: position better! -->
+    <input id="eventbtn" class="btn btn-primary" type="button" value="New Event" onclick="eventClickFunction()">
 
   </body>
 </html>

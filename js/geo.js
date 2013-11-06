@@ -46,6 +46,7 @@ function handleNoGeolocation(boolFlag)
 
 //Trap a GPS error, log it to console and display on site
 function gotErr(error) {
+	alert("got error");
     var errors = { 
             1: 'Permission denied',
             2: 'Position unavailable',
@@ -59,35 +60,59 @@ function gotErr(error) {
 function get_location() {
 	if (Modernizr.geolocation) {
 		// Find location... fill in.
-		
+		alert("location");
 
 		//navigator.geolocation.getCurrentPosition(location_found);
 		
 		navigator.geolocation.getCurrentPosition(location_found, gotErr, options );
 		
-		
-		
 	} else {
+		alert("no native support");
 		// no native support; maybe try a fallback?		
 		document.getElementByID('noLocationSupport').innerHTML = "Geolocation is not supported.";
 	}
 }
 
-//Call this function when you've succesfully obtained the location. 
-function location_found(position) {
-	// Extract latitude and longitude and save on the server using an AJAX call. 
-	// When you've updated the location, call populateStudentTable(json); again
-	// to put the new location next to the student on the page. . 
-	
-	/*alert("Found you at latitude " + position.coords.latitude +
-	        ", longitude " + position.coords.longitude);*/
+// Calls this function when you've successfully obtained the location. 
+function location_found(position) {	
+	// temporary to show that we get latitude and longitude
+	alert("Found you at latitude " + position.coords.latitude +
+	        ", longitude " + position.coords.longitude);
 	
 	/*$.getJSON("http://<path here>.json", {
 		latitude:position.coords.latitude, longitude:position.coords.longitude
 	},function(json){
 	   		
-		// TODO: open form
+		// TODO: open form?
 	  });*/
 	
+	var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);                        
+
+    var marker = new google.maps.Marker(
+    {
+          position: myLatlng,
+          map: map,
+          title: "This is my marker. There are many like it, but this one is mine."
+    });
 	
+	
+}
+
+function eventClickFunction(){
+	alert("event");
+	get_location();
+}
+	
+// helper to be better able to see JSON data
+function explodeJSON(object) {
+	if (object instanceof Object == true) {
+		objectStorage[object['@id']] = object;
+		console.log('Object is object');
+	} else {
+		console.log('Object is not object');
+		object = objectStorage[object];
+		console.log(object);
+	}
+	console.log(object);
+	return object;
 }
