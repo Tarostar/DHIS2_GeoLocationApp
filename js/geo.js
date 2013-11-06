@@ -1,4 +1,5 @@
 var map;
+var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
 
 function initialize_map() {
 
@@ -46,7 +47,6 @@ function handleNoGeolocation(boolFlag)
 
 //Trap a GPS error, log it to console and display on site
 function gotErr(error) {
-	alert("got error");
     var errors = { 
             1: 'Permission denied',
             2: 'Position unavailable',
@@ -54,13 +54,13 @@ function gotErr(error) {
         };
     console.log("Error: " + errors[error.code]);
     $('#debug-latlng').text('GPS position not available');
+    alert("Error: " + errors[error.code])
 } //gotErr
 
 //This function gets called when you press the Set Location button
 function get_location() {
 	if (Modernizr.geolocation) {
 		// Find location... fill in.
-		alert("modernizr")
 
 		//navigator.geolocation.getCurrentPosition(location_found);
 		
