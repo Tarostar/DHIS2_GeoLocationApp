@@ -32,3 +32,4 @@ overlays/
 .bzr
 .bzrignore
 *.*~
+*.zip
