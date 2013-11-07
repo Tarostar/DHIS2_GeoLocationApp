@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="css/geo.css" rel="stylesheet" media="screen">
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -57,11 +58,13 @@
 	        <!--/.nav-collapse -->
 	    </div>
 	</div>
+	
+	
 
     <h1>Hello, world! Map..</h1>
     <div id="map-canvas" class="container map"></div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- <script src="//code.jquery.com/jquery.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://modernizr.com/downloads/modernizr-latest.js"></script>
     <!-- Important to include jquery before bootstrap -->
@@ -80,7 +83,14 @@
     
     <!-- button for user to create new event, should open the form for the users unit with location-->
     <!-- TODO: position better! -->
-    <!-- <input id="eventbtn" class="btn btn-primary" type="button" value="New Event" onclick="eventClickFunction()"> -->
+    <div class="user_input_section">
+    	<br/>
+    	<input id="eventbtn" class="btn btn-primary" type="button" value="New Event" onclick="eventClickFunction()">
+    	
+    	<table id="div-my-table"></table>
+	</div>
+
+    
 
   </body>
 </html>

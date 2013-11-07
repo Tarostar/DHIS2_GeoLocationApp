@@ -100,32 +100,46 @@ function location_found(position) {
 
 function eventClickFunction(){
 	//get_location();
-	alert("go");
-	jsondata ="{
-		  "program": "eBAyeGv0exc",
-		  "orgUnit": "DiszpKrYNg8",
-		  "eventDate": "2013-05-17",
-		  "status": "COMPLETED",
-		  "storedBy": "admin",
-		  "coordinate": {
-		    "latitude": "59.8",
-		    "longitude": "10.9"
-		  },
-		  "dataValues": [
-		    { "dataElement": "qrur9Dvnyt5", "value": "22" },
-		    { "dataElement": "oZg33kd9taw", "value": "Male" },
-		    { "dataElement": "msodh3rEMJa", "value": "2013-05-18" }
-		  ]
-		}"
+		
+	// Test code to check that I could display JSON
+	/*var json =
+		 {
+			  "program": "eBAyeGv0exc",
+			  "orgUnit": "DiszpKrYNg8",
+			  "eventDate": "2013-05-17",
+			  "status": "COMPLETED",
+			  "storedBy": "admin",
+			  "coordinate": {
+			    "latitude": "59.8",
+			    "longitude": "10.9"
+			  },
+			  "dataValues": [
+			    { "dataElement": "qrur9Dvnyt5", "value": "22" },
+			    { "dataElement": "oZg33kd9taw", "value": "Male" },
+			    { "dataElement": "msodh3rEMJa", "value": "2013-05-18" }
+			  ]
+			}
 	
-		//$.getJSON("http://apps.dhis2.org/demo/api/events.json", {jsondata}, function(json){ });
-		//$.getJSON("http://apps.dhis2.org/demo/api/events.json", jsondata, function(json){ });
+	
+	var $table = $("<table></table>");
+    $.each(json.dataValues, function (i, item) {
+       $table.append($("<tr><td>" + item.dataElement + "</td><td>" + item.value + "</td></tr>"));
+    });
+	
+   $("#div-my-table").append($table);*/
+	
+	// TODO: test this
+	//$.getJSON("http://apps.dhis2.org/demo/api/events.json", {jsondata}, function(json){ });
+	//$.getJSON("http://apps.dhis2.org/demo/api/events.json", jsondata, function(json){ });
 		
-		$.getJSON("api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18", function(json){ 
-			alert(json);
-		});
-		
-	   	
+	$.getJSON("api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18", function(json){ 
+		var $table = $("<table></table>");
+	    $.each(json.dataValues, function (i, item) {
+	       $table.append($("<tr><td>" + item.dataElement + "</td><td>" + item.value + "</td></tr>"));
+	    });
+	    
+	    $("#div-my-table").append($table);
+	});
 	 
 }
 	
