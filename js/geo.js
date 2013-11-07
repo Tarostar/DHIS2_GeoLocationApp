@@ -99,6 +99,7 @@ function location_found(position) {
 }
 
 function eventClickFunction(){
+	// This is a test to get current location. This works, but commented out for now.
 	//get_location();
 		
 	// Test code to check that I could display JSON
@@ -131,11 +132,20 @@ function eventClickFunction(){
 	// TODO: test this
 	//$.getJSON("http://apps.dhis2.org/demo/api/events.json", {jsondata}, function(json){ });
 	//$.getJSON("http://apps.dhis2.org/demo/api/events.json", jsondata, function(json){ });
-		
-	$.getJSON("api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18", function(json){ 
+	
+	// for now this just tests doing a query on a program and shows the headers in a table
+	// note first line is just some metadata names...
+
+	// url for local DHIS2 testing
+	// var testurl = "http://localhost:8080/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18"
+	// url for DHIS2 demo testing
+	var testurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18";
+	$.getJSON(testurl, function(json){ 
 		var $table = $("<table></table>");
-	    $.each(json.dataValues, function (i, item) {
-	       $table.append($("<tr><td>" + item.dataElement + "</td><td>" + item.value + "</td></tr>"));
+		
+		$table.append($("<tr><td>" + json.metaData.names.eBAyeGv0exc + "</td><td>" + json.metaData.names.qrur9Dvnyt5 + "</td><td>" + json.metaData.oZg33kd9taw + "</td></tr>"));
+	    $.each(json.headers, function (i, item) {
+	       $table.append($("<tr><td>" + item.name + "</td><td>" + item.column + "</td><td>" + item.type + "</td></tr>"));
 	    });
 	    
 	    $("#div-my-table").append($table);
