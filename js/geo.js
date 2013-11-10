@@ -102,36 +102,39 @@ function eventClickFunction(){
 	// This is a test to get current location. This works, but commented out for now.
 	//get_location();
 		
+	
 	// Test code to check that I could display JSON
-	/*var json =
-		 {
+	var jsonTest =
+		{
 			  "program": "eBAyeGv0exc",
 			  "orgUnit": "DiszpKrYNg8",
-			  "eventDate": "2013-05-17",
-			  "status": "COMPLETED",
+			  "eventDate": "2013-10-10",
+			  "dataValues": [
+			    { "dataElement": "qrur9Dvnyt5", "value": "22" },
+			    { "dataElement": "oZg33kd9taw", "value": "Male" },
+			    { "dataElement": "msodh3rEMJa", "value": "2013-11-11" }
+			  ]
+			}
+	
+	/* NON REQUIRED JSON ELEMENTS
+	  		  "status": "COMPLETED",
 			  "storedBy": "admin",
 			  "coordinate": {
 			    "latitude": "59.8",
 			    "longitude": "10.9"
-			  },
-			  "dataValues": [
-			    { "dataElement": "qrur9Dvnyt5", "value": "22" },
-			    { "dataElement": "oZg33kd9taw", "value": "Male" },
-			    { "dataElement": "msodh3rEMJa", "value": "2013-05-18" }
-			  ]
-			}
+	 */
 	
-	
-	var $table = $("<table></table>");
-    $.each(json.dataValues, function (i, item) {
+	/*var $table = $("<table></table>");
+    $.each(jsonTest.dataValues, function (i, item) {
        $table.append($("<tr><td>" + item.dataElement + "</td><td>" + item.value + "</td></tr>"));
     });
 	
    $("#div-my-table").append($table);*/
 	
 	// TODO: test this
-	//$.getJSON("http://apps.dhis2.org/demo/api/events.json", {jsondata}, function(json){ });
-	//$.getJSON("http://apps.dhis2.org/demo/api/events.json", jsondata, function(json){ });
+	$.getJSON("http://apps.dhis2.org/demo/api/events", jsonTest, function(json){
+			alert("success");
+	});
 	
 	// for now this just tests doing a query on a program and shows the headers in a table
 	// note first line is just some metadata names...
@@ -139,13 +142,22 @@ function eventClickFunction(){
 	// url for local DHIS2 testing
 	// var testurl = "http://localhost:8080/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18"
 	// url for DHIS2 demo testing
-	var testurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18";
+	var testurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2013-01-01&endDate=2014-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5";
 	$.getJSON(testurl, function(json){ 
 		var $table = $("<table></table>");
 		
-		$table.append($("<tr><td>" + json.metaData.names.eBAyeGv0exc + "</td><td>" + json.metaData.names.qrur9Dvnyt5 + "</td><td>" + json.metaData.oZg33kd9taw + "</td></tr>"));
+		/*$table.append($('<span class="bold">'));*/
+		$table.append($("<tr><td><b>Name</b></td><td><b>Column</b></td><td><b>Type</b></td><td><b>Hidden</b></td><td><b>Meta</b></td></tr>"));
+		/*$table.append($("</span>"));*/
+		
 	    $.each(json.headers, function (i, item) {
-	       $table.append($("<tr><td>" + item.name + "</td><td>" + item.column + "</td><td>" + item.type + "</td></tr>"));
+	       $table.append($("<tr><td>" + item.name + "</td><td>" + item.column + "</td><td>" + item.type + "</td><td>" + item.hidden + "</td><td>" + item.meta + "</td></tr>"));
+	    });
+	    
+	    $table.append($("<tr><td><b>Org ID</b></td><td><b>Admission</b></td><td><b>Discharge</b></td><td><b>Diagnosis</b></td><td><b>Gender</b></td><td><b>Age</b></td>/tr>"));
+	    
+	    $.each(json.rows, function (i, item) {
+	    	$table.append($("<tr><td>" + item[5] + "</td><td>" + item[6] + "</td><td>" + item[7] + "</td><td>" + item[8] + "</td><td>" + item[9] + "</td><td>" + item[10] + "</td></tr>"));
 	    });
 	    
 	    $("#div-my-table").append($table);
