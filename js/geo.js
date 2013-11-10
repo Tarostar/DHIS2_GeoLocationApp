@@ -110,9 +110,9 @@ function eventClickFunction(){
 			  "orgUnit": "DiszpKrYNg8",
 			  "eventDate": "2013-10-10",
 			  "dataValues": [
-			    { "dataElement": "qrur9Dvnyt5", "value": "22" },
+			    { "dataElement": "qrur9Dvnyt5", "value": "99" },
 			    { "dataElement": "oZg33kd9taw", "value": "Male" },
-			    { "dataElement": "msodh3rEMJa", "value": "2013-11-11" }
+			    { "dataElement": "msodh3rEMJa", "value": "2013-06-06" }
 			  ]
 			}
 	
@@ -131,9 +131,25 @@ function eventClickFunction(){
 	
    $("#div-my-table").append($table);*/
 	
-	// TODO: test this
-	$.getJSON("http://apps.dhis2.org/demo/api/events", jsonTest, function(json){
+	// This doesn't work...
+//	$.getJSON("http://apps.dhis2.org/demo/api/events", jsonTest, function(json){
+//			alert("success");
+//	});
+	
+	//...so trying this to get the error which is:
+	// HTTP Status 500 - Unexpected character ('p' (code 112)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
+	$.ajax({
+		type:	"POST",
+		url:	"http://apps.dhis2.org/demo/api/events",
+		data:	jsonTest,
+		dataType: "json",
+		contentType:"application/json; charset=utf-8",
+		success:function(json){
 			alert("success");
+		},
+		error:function(xhr, status, error){
+			alert((xhr.responseText));
+		}
 	});
 	
 	// for now this just tests doing a query on a program and shows the headers in a table
