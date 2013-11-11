@@ -1,4 +1,36 @@
-<p> Borrowed from example to test functionality </p>
+<!--<p> Borrowed from example to test functionality </p>
 <p>Your name is: {{name}}</p>
 <p>Your first org unit is: {{organisationUnit}}</p>
+-->
 
+<!DOCTYPE html>
+<html>
+	<head>
+	    <meta charset="utf-8">
+		<title>Mandalorian Geolocation App - Form</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- Bootstrap -->
+		<link href="../css/bootstrap.css" rel="stylesheet" media="screen">
+		    <script src="../js/jquery.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/formjs.js"></script>
+     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	 <script>
+$(function() {
+$( "#datepicker" ).datepicker();
+});
+</script>
+	</head>
+	
+	<body>
+		<form class="form-horizontal well" role="form" id="myForm">
+<!-- 			<p>Date: <input type="text" id="datepicker" /></p> -->
+		   		<div class="form-group">
+			<label for="datepicker" class="col-sm-2 control-label">Date</label>
+			<div class="col-sm-4">
+			  <input type="text" class="form-control" id="datepicker" placeholder="Date">
+			</div>
+		 </div>
+		</form>
+	</body>
+</html>
