@@ -59,57 +59,44 @@ function gotErr(error) {
 
 //This function gets called when you press the Set Location button
 function get_location() {
-	if (Modernizr.geolocation) {
-		// Find location... fill in.
-
-		//navigator.geolocation.getCurrentPosition(location_found);
-		
+	if (Modernizr.geolocation) {		
 		navigator.geolocation.getCurrentPosition(location_found, gotErr, options );
-		
 	} else {
-		alert("no native support");
-		// no native support; maybe try a fallback?		
-		document.getElementByID('noLocationSupport').innerHTML = "Geolocation is not supported.";
+		// alert("No native support for GeoLocation");
+		document.getElementByID('noLocationSupport').innerHTML = "Geolocation is not supported by your browser.";
 	}
 }
 
 // Calls this function when you've successfully obtained the location. 
 function location_found(position) {	
-	// temporary to show that we get latitude and longitude
-	alert("Found you at latitude " + position.coords.latitude +
-	        ", longitude " + position.coords.longitude);
+	/*alert("Found you at latitude " + position.coords.latitude +
+	        ", longitude " + position.coords.longitude);*/
 	
-	/*$.getJSON("http://<path here>.json", {
-		latitude:position.coords.latitude, longitude:position.coords.longitude
-	},function(json){
-	   		
-		// TODO: open form?
-	  });*/
-	
-	var myLatlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);                        
-
-    var marker = new google.maps.Marker(
-    {
-          position: myLatlng,
-          map: map,
-          title: "This is my marker. There are many like it, but this one is mine."
-    });
-	
+	createEvent(position.coords.latitude, position.coords.longitude);
 	
 }
 
-function eventClickFunction(){
-	// This is a test to get current location. This works, but commented out for now.
-	//get_location();
+function newEvent(){
+	// get location, which in turn will open the form to create a new event
+	get_location();
+        
+}
+
+function createEvent(latitude, longitude){
 	
-	// old orgUnit: DiszpKrYNg8
-		
-	// Test code to check that I could display JSON - this now works
+	// TODO: this should open the event form with latitude and longitude
+	
+	// test code to create a new event
+	
+	// Admission Date: eMyVanycQSC
+	// Discharge Date: msodh3rEMJa
+	// Mode of discharge (string): fWIAEtYVEGk
+	// Diagnosis (string): K6uUAvq500H
 	
 	var jsonTest = '{ \
 			  "program": "eBAyeGv0exc", \
 			  "orgUnit": "DiszpKrYNg8", \
-			  "eventDate": "2013-10-10", \
+			  "eventDate": "2013-11-11", \
 			  "status": "COMPLETED", \
 			  "storedBy": "admin", \
 			  "coordinate": { \
@@ -117,9 +104,12 @@ function eventClickFunction(){
 				"longitude": "10" \
 			  }, \
 			  "dataValues": [ \
-			    { "dataElement": "qrur9Dvnyt5", "value": "99" }, \
-			    { "dataElement": "oZg33kd9taw", "value": "Male" }, \
-			    { "dataElement": "msodh3rEMJa", "value": "2013-11-11" } \
+			    { "dataElement": "qrur9Dvnyt5", "value": "9" }, \
+			    { "dataElement": "oZg33kd9taw", "value": "Female" }, \
+			    { "dataElement": "msodh3rEMJa", "value": "2013-11-11" }, \
+				{ "dataElement": "eMyVanycQSC", "value": "2013-10-11" }, \
+				{ "dataElement": "fWIAEtYVEGk", "value": "Transferred" }, \
+				{ "dataElement": "K6uUAvq500H", "value": "A029 Salmonella infection, unspecified" } \
 			  ] \
 			}';
 	
@@ -137,16 +127,18 @@ function eventClickFunction(){
 			alert((xhr.responseText));
 		}
 	});
-	
-	// for now this just tests doing a query on a program and shows the headers in a table
-	// note first line is just some metadata names...
-	// note2: we can potentially use this to show all the events in a table on the page below the map
 }
 
 function retrieve_events(url, program, startDate, endDate, orgUnit1, orgUnit2)
 {
+	// for now this just tests doing a query on a program and shows the headers in a table
+	// note first line is just some metadata names...
+	// note2: we can potentially use this to show all the events in a table on the page below the map
+	
 	var jsonurl = url + program + "?startDate=" + startDate +  "&endDate=" + endDate + "&dimension=ou:"+ orgUnit1 + ";" + orgUnit2 + "8&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5";
-		
+	//var jsonurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18";
+	// var jsonurl = "http://apps.dhis2.org/demo/api/analytics/events/query/IpHINAT79UW?stage=A03MvHHogjR&startDate=2012-03-01&endDate=2012-12-31&dimension=ou:O6uvpzGd5pu&dimension=UXz7xuGCEhU:GT:2000";
+	
 	$.getJSON(jsonurl, function(json){ 
 		
 		var $table = $("<table></table>");
@@ -171,4 +163,24 @@ function retrieve_events(url, program, startDate, endDate, orgUnit1, orgUnit2)
 	    
 	    $("#div-my-table").append($table);
 	});
+	
+	/*var position = new google.maps.LatLng(latitude, longitude);
+	
+	// TODO: add images to markers (maybe use url to image)
+	// var image = 'images/xxx.png';
+
+	var marker = new google.maps.Marker(
+    {
+          position: position,
+          map: map,
+          title: "This is my marker. There are many like it, but this one is mine.",
+          url: "http://www.vg.n0"
+          // icon: image
+    });
+	
+	// event listener for url 
+    google.maps.event.addListener(marker, 'click', function() {
+        window.location.href = marker.url;	
+    });*/
+
 }
