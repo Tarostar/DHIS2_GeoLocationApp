@@ -101,64 +101,49 @@ function location_found(position) {
 function eventClickFunction(){
 	// This is a test to get current location. This works, but commented out for now.
 	//get_location();
+	
+	// old orgUnit: DiszpKrYNg8
 		
+	// Test code to check that I could display JSON - this now works
+	/*
+	var jsonTest = '{ \
+			  "program": "eBAyeGv0exc", \
+			  "orgUnit": "fdc6uOvgoji", \
+			  "eventDate": "2013-10-10", \
+			  "status": "COMPLETED", \
+			  "storedBy": "admin", \
+			  "coordinate": { \
+				"latitude": "10", \
+				"longitude": "10" \
+			  }, \
+			  "dataValues": [ \
+			    { "dataElement": "qrur9Dvnyt5", "value": "99" }, \
+			    { "dataElement": "oZg33kd9taw", "value": "Male" }, \
+			    { "dataElement": "msodh3rEMJa", "value": "2013-11-11" } \
+			  ] \
+			}';
 	
-	// Test code to check that I could display JSON
-	var jsonTest =
-		{
-			  "program": "eBAyeGv0exc",
-			  "orgUnit": "DiszpKrYNg8",
-			  "eventDate": "2013-10-10",
-			  "dataValues": [
-			    { "dataElement": "qrur9Dvnyt5", "value": "99" },
-			    { "dataElement": "oZg33kd9taw", "value": "Male" },
-			    { "dataElement": "msodh3rEMJa", "value": "2013-06-06" }
-			  ]
-			}
 	
-	/* NON REQUIRED JSON ELEMENTS
-	  		  "status": "COMPLETED",
-			  "storedBy": "admin",
-			  "coordinate": {
-			    "latitude": "59.8",
-			    "longitude": "10.9"
-	 */
-	
-	/*var $table = $("<table></table>");
-    $.each(jsonTest.dataValues, function (i, item) {
-       $table.append($("<tr><td>" + item.dataElement + "</td><td>" + item.value + "</td></tr>"));
-    });
-	
-   $("#div-my-table").append($table);*/
-	
-	// This doesn't work...
-//	$.getJSON("http://apps.dhis2.org/demo/api/events", jsonTest, function(json){
-//			alert("success");
-//	});
-	
-	//...so trying this to get the error which is:
-	// HTTP Status 500 - Unexpected character ('p' (code 112)): expected a valid value (number, String, array, object, 'true', 'false' or 'null')
 	$.ajax({
-		type:	"POST",
-		url:	"http://apps.dhis2.org/demo/api/events",
-		data:	jsonTest,
-		dataType: "json",
-		contentType:"application/json; charset=utf-8",
+		type:	'post',
+		url:	'/demo/api/events/',
+		data: jsonTest,
+		dataType: 'json',
+		contentType:'application/json; charset=utf-8',
 		success:function(json){
 			alert("success");
 		},
 		error:function(xhr, status, error){
 			alert((xhr.responseText));
 		}
-	});
+	});*/
 	
 	// for now this just tests doing a query on a program and shows the headers in a table
 	// note first line is just some metadata names...
-
-	// url for local DHIS2 testing
-	// var testurl = "http://localhost:8080/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18"
+	// note2: we can potentially use this to show all the events in a table on the page below the map
+	
 	// url for DHIS2 demo testing
-	var testurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2013-01-01&endDate=2014-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5";
+	var testurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2014-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5";
 	$.getJSON(testurl, function(json){ 
 		var $table = $("<table></table>");
 		
@@ -179,18 +164,4 @@ function eventClickFunction(){
 	    $("#div-my-table").append($table);
 	});
 	 
-}
-	
-// helper to be better able to see JSON data
-function explodeJSON(object) {
-	if (object instanceof Object == true) {
-		objectStorage[object['@id']] = object;
-		console.log('Object is object');
-	} else {
-		console.log('Object is not object');
-		object = objectStorage[object];
-		console.log(object);
-	}
-	console.log(object);
-	return object;
 }
