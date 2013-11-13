@@ -105,10 +105,10 @@ function eventClickFunction(){
 	// old orgUnit: DiszpKrYNg8
 		
 	// Test code to check that I could display JSON - this now works
-	/*
+	
 	var jsonTest = '{ \
 			  "program": "eBAyeGv0exc", \
-			  "orgUnit": "fdc6uOvgoji", \
+			  "orgUnit": "DiszpKrYNg8", \
 			  "eventDate": "2013-10-10", \
 			  "status": "COMPLETED", \
 			  "storedBy": "admin", \
@@ -136,16 +136,24 @@ function eventClickFunction(){
 		error:function(xhr, status, error){
 			alert((xhr.responseText));
 		}
-	});*/
+	});
 	
 	// for now this just tests doing a query on a program and shows the headers in a table
 	// note first line is just some metadata names...
 	// note2: we can potentially use this to show all the events in a table on the page below the map
-	
-	// url for DHIS2 demo testing
-	var testurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2014-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5";
-	$.getJSON(testurl, function(json){ 
+}
+
+function retrieve_events(url, program, startDate, endDate, orgUnit1, orgUnit2)
+{
+	var jsonurl = url + program + "?startDate=" + startDate +  "&endDate=" + endDate + "&dimension=ou:"+ orgUnit1 + ";" + orgUnit2 + "8&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5";
+		
+	$.getJSON(jsonurl, function(json){ 
+		
 		var $table = $("<table></table>");
+		
+		// metadata
+		$table.append($("<tr><td><b>Orgunit: </b></td><td>" + orgUnit1 + "</td><td>" + orgUnit2 + "</td><td></td><td></td></tr>"));
+		//$table.append($("<tr><td><b>" + json.metaData.names.ImspTQPwCqd + "</b></td><td><b>" + json.metaData.names.O6uvpzGd5pu + "</b></td><td><b>" + json.metaData.names.YuQRtpLP10I + "</b></td><td><b>" + json.metaData.names.qrur9Dvnyt5 + "</b></td><td><b>-</b></td></tr>"));
 		
 		/*$table.append($('<span class="bold">'));*/
 		$table.append($("<tr><td><b>Name</b></td><td><b>Column</b></td><td><b>Type</b></td><td><b>Hidden</b></td><td><b>Meta</b></td></tr>"));
@@ -153,7 +161,7 @@ function eventClickFunction(){
 		
 	    $.each(json.headers, function (i, item) {
 	       $table.append($("<tr><td>" + item.name + "</td><td>" + item.column + "</td><td>" + item.type + "</td><td>" + item.hidden + "</td><td>" + item.meta + "</td></tr>"));
-	    });
+	    });	    
 	    
 	    $table.append($("<tr><td><b>Org ID</b></td><td><b>Admission</b></td><td><b>Discharge</b></td><td><b>Diagnosis</b></td><td><b>Gender</b></td><td><b>Age</b></td>/tr>"));
 	    
@@ -163,5 +171,4 @@ function eventClickFunction(){
 	    
 	    $("#div-my-table").append($table);
 	});
-	 
 }
