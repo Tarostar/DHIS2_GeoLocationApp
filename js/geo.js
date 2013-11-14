@@ -129,38 +129,36 @@ function createEvent(latitude, longitude){
 	});
 }
 
-function retrieve_events(url, program, startDate, endDate, orgUnit1, orgUnit2)
+function retrieve_events(url, program, startDate, endDate, orgUnit)
 {
+	// Format of url: http://apps.dhis2.org/demo/api/events?orgUnit=A&program=B&startDate=2000-01-01&endDate=2013-01-01
+	// For example:	http://apps.dhis2.org/demo/api/events.json?orgUnit=DiszpKrYNg8&program=eBAyeGv0exc&startDate=2000-01-01&endDate=2013-01-01
+			
 	// for now this just tests doing a query on a program and shows the headers in a table
 	// note first line is just some metadata names...
 	// note2: we can potentially use this to show all the events in a table on the page below the map
 	
-	var jsonurl = url + program + "?startDate=" + startDate +  "&endDate=" + endDate + "&dimension=ou:"+ orgUnit1 + ";" + orgUnit2 + "8&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5";
-	//var jsonurl = "http://apps.dhis2.org/demo/api/analytics/events/query/eBAyeGv0exc?startDate=2012-01-01&endDate=2012-10-31&dimension=ou:O6uvpzGd5pu;fdc6uOvgoji&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5:EQ:18";
-	// var jsonurl = "http://apps.dhis2.org/demo/api/analytics/events/query/IpHINAT79UW?stage=A03MvHHogjR&startDate=2012-03-01&endDate=2012-12-31&dimension=ou:O6uvpzGd5pu&dimension=UXz7xuGCEhU:GT:2000";
+	var jsonurl = url + "?orgUnit=" + orgUnit + "&program=" + program + "&startDate=" + startDate +  "&endDate=" + endDate;
+	// old dimensions used - defunct but kept in case will be useful:  + "&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5
 	
 	$.getJSON(jsonurl, function(json){ 
 		
+	console.log("JSON "+JSON.stringify(json));
 		var $table = $("<table></table>");
 		
 		// metadata
-		$table.append($("<tr><td><b>Orgunit: </b></td><td>" + orgUnit1 + "</td><td>" + orgUnit2 + "</td><td></td><td></td></tr>"));
-		//$table.append($("<tr><td><b>" + json.metaData.names.ImspTQPwCqd + "</b></td><td><b>" + json.metaData.names.O6uvpzGd5pu + "</b></td><td><b>" + json.metaData.names.YuQRtpLP10I + "</b></td><td><b>" + json.metaData.names.qrur9Dvnyt5 + "</b></td><td><b>-</b></td></tr>"));
+		$table.append($("<tr><td><b>Orgunit: </b></td><td>" + orgUnit + "</td><td>Program:</td><td>" + program + "</td><td>" + endDate + "</td></tr>"));
 		
-		/*$table.append($('<span class="bold">'));*/
-		$table.append($("<tr><td><b>Name</b></td><td><b>Column</b></td><td><b>Type</b></td><td><b>Hidden</b></td><td><b>Meta</b></td></tr>"));
-		/*$table.append($("</span>"));*/
+		// header
+		$table.append($("<tr><td><b>Value</b></td><td><b>dataElement</b></td><td><b>providedElsewhere</b></td><td><b>storedBy</b></td><td><b>eventData</b></td></tr>"));
 		
-	    $.each(json.headers, function (i, item) {
-	       $table.append($("<tr><td>" + item.name + "</td><td>" + item.column + "</td><td>" + item.type + "</td><td>" + item.hidden + "</td><td>" + item.meta + "</td></tr>"));
+		// loop through all events and show values
+	    $.each(json.eventList, function (i, item) {
+	    	 $.each(item.dataValues, function (i, values) {
+	    		 $table.append($("<tr><td>" + values.value + "</td><td>" + values.dataElement + "</td><td>" + values.providedElsewhere + "</td><td>" + values.storedBy + "</td><td>" + item.eventDate + "</td></tr>"));
+	    	 });	       
 	    });	    
-	    
-	    $table.append($("<tr><td><b>Org ID</b></td><td><b>Admission</b></td><td><b>Discharge</b></td><td><b>Diagnosis</b></td><td><b>Gender</b></td><td><b>Age</b></td>/tr>"));
-	    
-	    $.each(json.rows, function (i, item) {
-	    	$table.append($("<tr><td>" + item[5] + "</td><td>" + item[6] + "</td><td>" + item[7] + "</td><td>" + item[8] + "</td><td>" + item[9] + "</td><td>" + item[10] + "</td></tr>"));
-	    });
-	    
+	        
 	    $("#div-my-table").append($table);
 	});
 	
