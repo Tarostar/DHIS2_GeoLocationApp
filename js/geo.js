@@ -3,17 +3,16 @@ var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
 
 function initialize_map() {
 
-        var mapOptions = {
-
-                zoom : 10,
-
-                mapTypeId : google.maps.MapTypeId.ROADMAP
-
+		var mapOptions = {
+	          center: new google.maps.LatLng(0, 0),
+	          zoom: 8,
+	          mapTypeId: google.maps.MapTypeId.ROADMAP
         };
 
-        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
         // Try HTML5 geolocation
+
 
         if (navigator.geolocation) {
 
@@ -24,6 +23,22 @@ function initialize_map() {
                                         position.coords.longitude);
 
                         map.setCenter(pos);
+                        
+                        
+                        // alert(position.coords.latitude + " / " + position.coords.longitude);
+                       /* var marker = new google.maps.Marker(
+                        	    {
+                        	          position: position,
+                        	          map: map,
+                        	          title: title,
+                        	          url: url
+                        	          // icon: image
+                        	    });
+                        		
+                        		// event listener for url 
+                        	    google.maps.event.addListener(marker, 'click', function() {
+                        	        window.location.href = marker.url;	
+                        	    });*/
 
                 }, function() {
 
@@ -34,10 +49,12 @@ function initialize_map() {
         } else {
 
                 // Browser doesn't support Geolocation
-
                 // Should really tell the user…
 
         }
+        
+        
+		
 }
 
 function handleNoGeolocation(boolFlag)
@@ -79,7 +96,6 @@ function location_found(position) {
 function newEvent(){
 	// get location, which in turn will open the form to create a new event
 	get_location();
-        
 }
 
 function createEvent(latitude, longitude){
@@ -147,7 +163,7 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 		var $table = $("<table></table>");
 		
 		// metadata
-		$table.append($("<tr><td><b>Orgunit: </b></td><td>" + orgUnit + "</td><td>Program:</td><td>" + program + "</td><td>" + endDate + "</td></tr>"));
+		$table.append($("<tr><td><b>Orgunit: </b></td><td>" + orgUnit + "</td><td><b>Program: </b></td><td>" + program + "</td><td></td></tr>"));
 		
 		// header
 		$table.append($("<tr><td><b>Value</b></td><td><b>dataElement</b></td><td><b>providedElsewhere</b></td><td><b>storedBy</b></td><td><b>eventData</b></td></tr>"));
@@ -156,29 +172,90 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 	    $.each(json.eventList, function (i, item) {
 	    	 $.each(item.dataValues, function (i, values) {
 	    		 $table.append($("<tr><td>" + values.value + "</td><td>" + values.dataElement + "</td><td>" + values.providedElsewhere + "</td><td>" + values.storedBy + "</td><td>" + item.eventDate + "</td></tr>"));
+	    		 
+	    		 // set markers on map
+	    		 //placeMarker(values.value, "http://www.vg.no", Math.floor((Math.random()*100)), Math.floor((Math.random()*100))); 
 	    	 });	       
 	    });	    
 	        
 	    $("#div-my-table").append($table);
 	});
 	
-	/*var position = new google.maps.LatLng(latitude, longitude);
+	var markers = [
+	               ['London Eye, London', 59,10],
+	               ['Palace of Westminster, London', 60,10]
+	               ['Test, London', 59,11]
+	           ];
+	
+	placeMarkers(markers);
+}
+
+function placeMarkers(markers)
+{
+	//alert(title + " : "+ latitude + " / " + longitude);
 	
 	// TODO: add images to markers (maybe use url to image)
 	// var image = 'images/xxx.png';
 
-	var marker = new google.maps.Marker(
-    {
-          position: position,
-          map: map,
-          title: "This is my marker. There are many like it, but this one is mine.",
-          url: "http://www.vg.n0"
-          // icon: image
-    });
-	
-	// event listener for url 
-    google.maps.event.addListener(marker, 'click', function() {
-        window.location.href = marker.url;	
-    });*/
+	/*var myLatlng = new google.maps.LatLng(lat, long);                      
 
+    var marker = new google.maps.Marker(
+    {
+          position: myLatlng,
+          map: map,
+          title: title
+    });*/
+	
+	var bounds = new google.maps.LatLngBounds();
+    
+	// Multiple Markers
+    markers = [
+        ['Stavern Kro', 59,10],
+        ['Hvaler Lighthouse', 60,10],
+        ['Lake House', 59,11]
+    ];
+    
+ // Info Window Content
+    var infoWindowContent = [
+        ['<div class="info_content">' +
+        '<h3><a href="http://www.uio.no">Stavern Kro</a></h3>' +
+        '<p>Food poisoning</p>' +        '</div>'],
+        ['<div class="info_content">' +
+        '<h3><a href="http://www.uio.no">Hvaler Lighthouse</a></h3>' +
+        '<p>Man fell</p>' + '</div>'],
+        ['<div class="info_content">' +
+         '<h3><a href="http://www.vg.no">Lake House</a></h3>' +
+         '<p>Drowned</p>' +        '</div>']
+    ];
+    
+    // Display multiple markers on a map
+    var infoWindow = new google.maps.InfoWindow(), marker, i;
+
+    // Loop through our array of markers & place each one on the map  
+    for( i = 0; i < markers.length; i++ ) {
+        var position = new google.maps.LatLng(markers[i][1], markers[i][2]);
+        bounds.extend(position);
+        marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: markers[i][0],
+        });
+        
+        // Allow each marker to have an info window    
+        google.maps.event.addListener(marker, 'click', (function(marker, i) {
+            return function() {
+                infoWindow.setContent(infoWindowContent[i][0]);
+                infoWindow.open(map, marker);
+            }
+        })(marker, i));
+
+        // Automatically center the map fitting all markers on the screen
+        map.fitBounds(bounds);
+    }
+
+    // Override our map zoom level once our fitBounds function runs (Make sure it only runs once)
+    /*var boundsListener = google.maps.event.addListener((map), 'bounds_changed', function(event) {
+        this.setZoom(8);
+        google.maps.event.removeListener(boundsListener);
+    });*/
 }
