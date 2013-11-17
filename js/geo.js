@@ -1,6 +1,11 @@
 var map;
 var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
 
+var markers = [];
+var infoWindowContent = [];
+
+var bRetrievedEvents = false;
+
 function initialize_map() {
 
 		var mapOptions = {
@@ -17,29 +22,14 @@ function initialize_map() {
         if (navigator.geolocation) {
 
                 navigator.geolocation.getCurrentPosition(function(position) {
-
-                        var pos = new google.maps.LatLng(position.coords.latitude,
-
-                                        position.coords.longitude);
-
+                		// center map
+                        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                         map.setCenter(pos);
-                        
-                        
-                        // alert(position.coords.latitude + " / " + position.coords.longitude);
-                       /* var marker = new google.maps.Marker(
-                        	    {
-                        	          position: position,
-                        	          map: map,
-                        	          title: title,
-                        	          url: url
-                        	          // icon: image
-                        	    });
-                        		
-                        		// event listener for url 
-                        	    google.maps.event.addListener(marker, 'click', function() {
-                        	        window.location.href = marker.url;	
-                        	    });*/
-
+                     
+                        // set latitude and longitude fields
+                        document.getElementById("latitude").value = position.coords.latitude;
+                    	document.getElementById("longitude").value = position.coords.longitude;
+                      
                 }, function() {
 
                         handleNoGeolocation(true);
@@ -52,6 +42,19 @@ function initialize_map() {
                 // Should really tell the user…
 
         }
+        
+        // function to get google coordinates and put them in the long/lat fields
+        google.maps.event.addListener(map, "rightclick", function(event) {     	
+        	document.getElementById("latitude").value = event.latLng.lat();
+        	document.getElementById("longitude").value = event.latLng.lng();
+        });
+        
+        // place markers when idle, but only if new events have been retrieved
+        google.maps.event.addListener(map, "idle", function(event) { 
+        	if (bRetrievedEvents == true) {
+        		placeMarkers();
+        	}
+        });
         
         
 		
@@ -76,7 +79,7 @@ function gotErr(error) {
 
 //This function gets called when you press the Set Location button
 function get_location() {
-	if (Modernizr.geolocation) {		
+	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(location_found, gotErr, options );
 	} else {
 		// alert("No native support for GeoLocation");
@@ -86,14 +89,18 @@ function get_location() {
 
 // Calls this function when you've successfully obtained the location. 
 function location_found(position) {	
-	/*alert("Found you at latitude " + position.coords.latitude +
-	        ", longitude " + position.coords.longitude);*/
-	
-	createEvent(position.coords.latitude, position.coords.longitude);
-	
+	// set latitude and longitude fields
+    document.getElementById("latitude").value = position.coords.latitude;
+	document.getElementById("longitude").value = position.coords.longitude;	
 }
 
 function newEvent(){
+	// get position from fields		
+	// createEvent(document.getElementById("latitude").value, var longfield = document.getElementById("longitude").value);
+	alert("create event at " + document.getElementById("latitude").value + " / " + document.getElementById("longitude").value)
+}
+
+function setLocation(){
 	// get location, which in turn will open the form to create a new event
 	get_location();
 }
@@ -145,10 +152,13 @@ function createEvent(latitude, longitude){
 	});
 }
 
+// TODO: this should be invoked by user for a specific program (potentially also filter for location area)
 function retrieve_events(url, program, startDate, endDate, orgUnit)
 {
 	// Format of url: http://apps.dhis2.org/demo/api/events?orgUnit=A&program=B&startDate=2000-01-01&endDate=2013-01-01
-	// For example:	http://apps.dhis2.org/demo/api/events.json?orgUnit=DiszpKrYNg8&program=eBAyeGv0exc&startDate=2000-01-01&endDate=2013-01-01
+	// For example:	http://apps.dhis2.org/demo/api/events.json?orgUnit=DiszpKrYNg8&program=eBAyeGv0exc&startDate=2013-01-01&endDate=2013-01-01
+	
+	// http://apps.dhis2.org/demo/api/events?orgUnit=DiszpKrYNg8&program=p4soZg51loO&startDate=2013-06-01&endDate=2013-12-12
 			
 	// for now this just tests doing a query on a program and shows the headers in a table
 	// note first line is just some metadata names...
@@ -157,9 +167,13 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 	var jsonurl = url + "?orgUnit=" + orgUnit + "&program=" + program + "&startDate=" + startDate +  "&endDate=" + endDate;
 	// old dimensions used - defunct but kept in case will be useful:  + "&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5
 	
+	
+	
 	$.getJSON(jsonurl, function(json){ 
 		
-	console.log("JSON "+JSON.stringify(json));
+		// TODO: test output, remove in final version
+		console.log("JSON "+JSON.stringify(json));
+		
 		var $table = $("<table></table>");
 		
 		// metadata
@@ -167,66 +181,39 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 		
 		// header
 		$table.append($("<tr><td><b>Value</b></td><td><b>dataElement</b></td><td><b>providedElsewhere</b></td><td><b>storedBy</b></td><td><b>eventData</b></td></tr>"));
+
+		// TODO:how do we get to these....  item.coordinate.latitude / item.coordinate.longitude
+		// attempting to use them produces javascript error
 		
 		// loop through all events and show values
 	    $.each(json.eventList, function (i, item) {
 	    	 $.each(item.dataValues, function (i, values) {
 	    		 $table.append($("<tr><td>" + values.value + "</td><td>" + values.dataElement + "</td><td>" + values.providedElsewhere + "</td><td>" + values.storedBy + "</td><td>" + item.eventDate + "</td></tr>"));
 	    		 
-	    		 // set markers on map
-	    		 //placeMarker(values.value, "http://www.vg.no", Math.floor((Math.random()*100)), Math.floor((Math.random()*100))); 
+	    		 // add map marker
+	    		 markers.push([values.value, Math.floor((Math.random()*40)+20), Math.floor((Math.random()*15))]);
+	    		 infoWindowContent.push( ['<div class="info_content">' +
+	    		                          '<h3><a href="' + item.href + '">' + item.href + '</a></h3>' +
+	    		                          '<p>Food poisoning</p>' +        '</div>']);
 	    	 });	       
 	    });	    
 	        
 	    $("#div-my-table").append($table);
+	    
+	    // flag to track when to update markers
+	    bRetrievedEvents = true;
 	});
-	
-	var markers = [
-	               ['London Eye, London', 59,10],
-	               ['Palace of Westminster, London', 60,10]
-	               ['Test, London', 59,11]
-	           ];
-	
-	placeMarkers(markers);
 }
 
-function placeMarkers(markers)
+function placeMarkers()
 {
-	//alert(title + " : "+ latitude + " / " + longitude);
+	// we only place markers if we actually got some new event (this is because markers are at the moment set when google map goes idle and this flag is true)
+	bRetrievedEvents = false;
 	
 	// TODO: add images to markers (maybe use url to image)
 	// var image = 'images/xxx.png';
-
-	/*var myLatlng = new google.maps.LatLng(lat, long);                      
-
-    var marker = new google.maps.Marker(
-    {
-          position: myLatlng,
-          map: map,
-          title: title
-    });*/
 	
 	var bounds = new google.maps.LatLngBounds();
-    
-	// Multiple Markers
-    markers = [
-        ['Stavern Kro', 59,10],
-        ['Hvaler Lighthouse', 60,10],
-        ['Lake House', 59,11]
-    ];
-    
- // Info Window Content
-    var infoWindowContent = [
-        ['<div class="info_content">' +
-        '<h3><a href="http://www.uio.no">Stavern Kro</a></h3>' +
-        '<p>Food poisoning</p>' +        '</div>'],
-        ['<div class="info_content">' +
-        '<h3><a href="http://www.uio.no">Hvaler Lighthouse</a></h3>' +
-        '<p>Man fell</p>' + '</div>'],
-        ['<div class="info_content">' +
-         '<h3><a href="http://www.vg.no">Lake House</a></h3>' +
-         '<p>Drowned</p>' +        '</div>']
-    ];
     
     // Display multiple markers on a map
     var infoWindow = new google.maps.InfoWindow(), marker, i;
@@ -250,6 +237,7 @@ function placeMarkers(markers)
         })(marker, i));
 
         // Automatically center the map fitting all markers on the screen
+        
         map.fitBounds(bounds);
     }
 

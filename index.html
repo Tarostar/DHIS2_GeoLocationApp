@@ -82,7 +82,7 @@
 			
 		// Bombali - Bombali Sebora - Pate Bana CHP
 		// fdc6uOvgoji;KKkLOTpMXGV;wzvDhS0TkAF
-		retrieve_events("http://apps.dhis2.org/demo/api/events/", "eBAyeGv0exc", "2013-06-01", "2013-12-12", "DiszpKrYNg8");
+		retrieve_events("http://apps.dhis2.org/demo/api/events.json", "eBAyeGv0exc", "2013-01-01", "2013-12-12", "DiszpKrYNg8");
 	});
 	</script>
 
@@ -93,7 +93,12 @@
     <!-- TODO: position better! -->
     <div class="user_input_section">
     	<br/>
+    	<label for="male">Latitude</label>
+    	<input type="number" name="latitude" id="latitude" value=0>
+    	<label for="male">Longitude</label>
+    	<input type="number" name="longitude" id="longitude" value=0>
     	<input id="eventbtn" class="btn btn-primary" type="button" value="New Event" onclick="newEvent()">
+    	<input id="setLocationbtn" class="btn btn-primary" type="button" value="Set My Location" onclick="setLocation()">
     	
     	<table id="div-my-table"></table>
 	</div>
