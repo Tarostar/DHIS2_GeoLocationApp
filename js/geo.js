@@ -96,8 +96,8 @@ function location_found(position) {
 
 function newEvent(){
 	// get position from fields		
-	// createEvent(document.getElementById("latitude").value, var longfield = document.getElementById("longitude").value);
-	alert("create event at " + document.getElementById("latitude").value + " / " + document.getElementById("longitude").value)
+	createEvent(document.getElementById("latitude").value, document.getElementById("longitude").value);
+	alert("created event at " + document.getElementById("latitude").value + " / " + document.getElementById("longitude").value)
 }
 
 function setLocation(){
@@ -180,22 +180,44 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 		$table.append($("<tr><td><b>Orgunit: </b></td><td>" + orgUnit + "</td><td><b>Program: </b></td><td>" + program + "</td><td></td></tr>"));
 		
 		// header
-		$table.append($("<tr><td><b>Value</b></td><td><b>dataElement</b></td><td><b>providedElsewhere</b></td><td><b>storedBy</b></td><td><b>eventData</b></td></tr>"));
+		$table.append($("<tr><td><b>Diagnosis</b></td><td><b>Age</b></td><td><b>Gender</b></td><td><b>Admission</b></td><td><b>Discharge</b></td></tr>"));
 
 		// TODO:how do we get to these....  item.coordinate.latitude / item.coordinate.longitude
 		// attempting to use them produces javascript error
 		
 		// loop through all events and show values
 	    $.each(json.eventList, function (i, item) {
+	    	tableValues = ["-","-","-","-","-"];
 	    	 $.each(item.dataValues, function (i, values) {
-	    		 $table.append($("<tr><td>" + values.value + "</td><td>" + values.dataElement + "</td><td>" + values.providedElsewhere + "</td><td>" + values.storedBy + "</td><td>" + item.eventDate + "</td></tr>"));
-	    		 
-	    		 // add map marker
-	    		 markers.push([values.value, Math.floor((Math.random()*40)+20), Math.floor((Math.random()*15))]);
-	    		 infoWindowContent.push( ['<div class="info_content">' +
-	    		                          '<h3><a href="' + item.href + '">' + item.href + '</a></h3>' +
-	    		                          '<p>Food poisoning</p>' +        '</div>']);
-	    	 });	       
+	    		 switch (values.dataElement) {
+	    		 	case "K6uUAvq500H": // diagnosis
+	    		 		tableValues[0] = values.value;
+	    		 		break;
+	    		 	case "qrur9Dvnyt5": // age
+	    		 		tableValues[1] = values.value;
+	    		 		break;
+	    		 	case "oZg33kd9taw": // gender
+	    		 		tableValues[2] = values.value;
+	    		 		break;
+	    		 	case "eMyVanycQSC": // admission
+	    		 		tableValues[3] = values.value; 
+	    		 		break;
+	    		 	case "msodh3rEMJa": // discharge
+	    		 		tableValues[4] = values.value; 
+	    		 		break;
+	    		 }
+	    	 });
+	    	 
+	    	 $table.append($("<tr><td>" + tableValues[0] + "</td><td>" + tableValues[1] + "</td><td>" + tableValues[2] + "</td><td>" + tableValues[3] + "</td><td>" + tableValues[4] + "</td></tr>"));
+    		 
+    		 // add map marker
+    		 markers.push([item.event, Math.floor((Math.random()*40)+20), Math.floor((Math.random()*15))]);
+    		 infoWindowContent.push( ['<div class="info_content">' +
+    		                          '<h3><a href="' + item.href + '">' + item.href + '</a></h3>' +
+    		                          '<p>Org Unit: ' + item.orgUnit + '</p>' +
+    		                          '<p>Event Date: ' + item.eventDate + '</p>' +
+    		                          '<p>EStored By: ' + item.storedBy + '</p>' +
+    		                          '<p>Program: ' + item.program + '</p>' +        '</div>']);
 	    });	    
 	        
 	    $("#div-my-table").append($table);
