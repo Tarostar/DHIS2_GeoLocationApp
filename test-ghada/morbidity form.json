@@ -1,0 +1,43 @@
+{
+	"program": "",
+	"programStageDataElements": [
+		{
+			"programStage": {
+				"name": "Single-Event Inpatient morbidity and mortality",
+				"href": "http://apps.dhis2.org/demo/api/programStages/Zj7UnCAulEk",
+				"id": "Zj7UnCAulEk"
+			},
+			"dataElement": {
+				"name": "Age",
+				"id": [
+					"qrur9Dvnyt5"
+				]
+			}
+		}, {
+			"dataElement": {
+				"name": "Gender",
+				"id": "oZg33kd9taw"
+			}
+		}, {
+			"dataElement": {
+				"name": "Admission Date",
+				"id": "eMyVanycQSC"
+			}
+		}, {
+			"dataElement": {
+				"name": "Discharge Date",
+				"id": "msodh3rEMJa"
+			}
+		}, {
+			"dataElement": {
+				"name": "Mode of Discharge",
+				"id": "fWIAEtYVEGk"
+			}
+		}, {
+			"dataElement": {
+				"name": "Diagnosis (ICD-10)",
+				"id": "K6uUAvq500H"
+			}
+		}
+	]
+}

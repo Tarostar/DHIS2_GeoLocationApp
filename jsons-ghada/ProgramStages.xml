@@ -1,0 +1,64 @@
+<json>
+	<programStages>
+		<name>ANC 1st visit</name>
+		<created>2013-03-04T10:41:07.541+0000</created>
+		<lastUpdated>2013-04-10T10:15:02.041+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/eaDHS084uMp</href>
+		<id>eaDHS084uMp</id>
+	</programStages>
+	<programStages>
+		<name>ANC Visit (2-4+)</name>
+		<created>2013-03-04T10:41:07.541+0000</created>
+		<lastUpdated>2013-04-09T20:39:20.903+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/grIfo3oOf4Y</href>
+		<id>grIfo3oOf4Y</id>
+	</programStages>
+	<programStages>
+		<name>Baby Postnatal</name>
+		<created>2013-03-04T10:41:07.541+0000</created>
+		<lastUpdated>2013-03-04T10:41:07.541+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/ZzYYXq4fJie</href>
+		<id>ZzYYXq4fJie</id>
+	</programStages>
+	<programStages>
+		<name>Birth</name>
+		<created>2013-03-04T10:41:07.541+0000</created>
+		<lastUpdated>2013-03-04T10:41:07.541+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/A03MvHHogjR</href>
+		<id>A03MvHHogjR</id>
+	</programStages>
+	<programStages>
+		<name>Delivery</name>
+		<created>2013-03-04T10:41:07.541+0000</created>
+		<lastUpdated>2013-04-09T20:39:20.905+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/Xgk8Wvl0jHr</href>
+		<id>Xgk8Wvl0jHr</id>
+	</programStages>
+	<programStages>
+		<name>PNC Visit</name>
+		<created>2013-03-04T10:41:07.541+0000</created>
+		<lastUpdated>2013-04-09T20:39:20.907+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/oRySG82BKE6</href>
+		<id>oRySG82BKE6</id>
+	</programStages>
+	<programStages>
+		<name>Single-Event Inpatient morbidity and mortality</name>
+		<created>2013-02-07T13:12:20.493+0000</created>
+		<lastUpdated>2013-02-07T13:12:20.493+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/Zj7UnCAulEk</href>
+		<id>Zj7UnCAulEk</id>
+	</programStages>
+	<programStages>
+		<name>TB visit</name>
+		<created>2013-03-04T10:41:07.541+0000</created>
+		<lastUpdated>2013-03-04T10:41:07.541+0000</lastUpdated>
+		<href>http://apps.dhis2.org/demo/api/programStages/ZkbAXlQUYJG</href>
+		<id>ZkbAXlQUYJG</id>
+	</programStages>
+	<pager>
+		<page>1</page>
+		<total>8</total>
+		<pageSize>50</pageSize>
+		<pageCount>1</pageCount>
+	</pager>
+</json>

@@ -1,0 +1,52 @@
+
+<body>
+<select> id= "selector" </select>
+
+
+<h1>Single Event Without Registration</h1>
+
+<p>we need to visualize our records location</p>
+<p> please select the form you would like to know its location </p>
+    
+
+
+    <select id= "selector" onchange > </select>
+
+    
+<script>
+
+window.onload = function test() {
+    var JSON = {
+        "COLUMNS":["NAME", "KIND"],
+
+	"DATA": [
+    
+			["Car accidents Records", "SEWR"]
+		,
+          [	"Child Programme","MEWR" ]
+			     
+    ]
+    }, select = document.getElementById("selector");
+   
+for (var i = 0; i < JSON.DATA.length; i++)  {  
+    //for (var i = 0, at = JSON.programs[i], name = at[0], kind = at[1]; i < //JSON.DATA.length; i++) {
+    var name=JSON.DATA[i][0];
+    var kind=JSON.DATA[i][1];
+   
+    // document.write("Name: " + name)
+    //document.write(i);
+    
+        var option = document.createElement("option");
+        option.value = name;
+        option.textContent = name+"   "+kind;
+        select.appendChild(option);
+    
+    };
+};
+
+</script> 
+    
+
+
+
+</body>
