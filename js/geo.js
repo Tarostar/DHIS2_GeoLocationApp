@@ -50,8 +50,9 @@ function initialize_map() {
         });
         
         // place markers when idle, but only if new events have been retrieved
-        google.maps.event.addListener(map, "idle", function(event) { 
+        google.maps.event.addListener(map, "idle", function(event) {
         	if (bRetrievedEvents == true) {
+        		// add map marker
         		placeMarkers();
         	}
         });
@@ -139,7 +140,7 @@ function createEvent(latitude, longitude){
 	
 	$.ajax({
 		type:	'post',
-		url:	'/demo/api/events/',
+		url:	'/dev/api/events/',
 		data: jsonTest,
 		dataType: 'json',
 		contentType:'application/json; charset=utf-8',
@@ -187,6 +188,9 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 		
 		// loop through all events and show values
 	    $.each(json.eventList, function (i, item) {
+	    	if (item.coordinate) {
+	    		alert("found coordinate");
+	    	}
 	    	tableValues = ["-","-","-","-","-"];
 	    	 $.each(item.dataValues, function (i, values) {
 	    		 switch (values.dataElement) {
@@ -248,6 +252,7 @@ function placeMarkers()
             position: position,
             map: map,
             title: markers[i][0],
+            icon: "img/marker.png"
         });
         
         // Allow each marker to have an info window    
@@ -268,4 +273,13 @@ function placeMarkers()
         this.setZoom(8);
         google.maps.event.removeListener(boundsListener);
     });*/
+}
+
+function authorize(){
+	jQuery(document).ready(function() {
+		$.post( "localhost/dhis-web-commons-security/login.action", {
+			j_username: "admin", j_password: "district"
+		}
+		);});
+
 }
