@@ -106,6 +106,16 @@ function setLocation(){
 	get_location();
 }
 
+function showEvents(){
+	
+	// var dateTypeVar = $('#fromdate').datepicker('getDate');
+	
+	/*var fromDate = $( ".fromdate" ).datepicker({ dateFormat: 'yy-mm-dd' }).val();*/
+	var fromDate = $('#fromdate').datepicker().val();
+	var toDate = $('#todate').datepicker().val();
+	retrieve_events(dhisAPI + "/api/events.json", document.getElementById("program").value, fromDate, toDate, document.getElementById("orgunit").value);
+}
+
 function createEvent(latitude, longitude){
 	
 	// TODO: this should open the event form with latitude and longitude

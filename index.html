@@ -67,7 +67,9 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="http://modernizr.com/downloads/modernizr-latest.js"></script>
     <!-- Important to include jquery before bootstrap -->
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <script src="js/jquery.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/geo.js"></script>
 
@@ -80,7 +82,8 @@
 			
 		// Bombali - Bombali Sebora - Pate Bana CHP
 		// fdc6uOvgoji;KKkLOTpMXGV;wzvDhS0TkAF
-		retrieve_events(dhisAPI + "/api/events.json", "eBAyeGv0exc", "2013-11-01", "2013-12-12", "DiszpKrYNg8");
+		// TODO: delete: moved to geo.js showEvents()
+		/* retrieve_events(dhisAPI + "/api/events.json", "eBAyeGv0exc", "2013-11-01", "2013-12-12", "DiszpKrYNg8"); */
 	});
 	</script>
 
@@ -90,15 +93,31 @@
     <!-- button for user to create new event, should open the form for the users unit with location-->
     <!-- TODO: position better! -->
     <div class="user_input_section">
-    	<br/>
-    	<label for="male">Latitude</label>
+    	<p>
+    	<label for="latitude">Latitude</label>
     	<input type="number" name="latitude" id="latitude" value=0>
-    	<label for="male">Longitude</label>
+    	<label for="longitude">Longitude</label>
     	<input type="number" name="longitude" id="longitude" value=0>
     	<input id="eventbtn" class="btn btn-primary" type="button" value="New Event" onclick="newEvent()">
     	<input id="setLocationbtn" class="btn btn-primary" type="button" value="Set My Location" onclick="setLocation()">
-    	
+    	</p><p>
+    	<script>
+    		$(function() { $( "#fromdate" ).datepicker({ dateFormat: "yy-mm-dd" }); });
+    		$(function() { $( "#todate" ).datepicker({ dateFormat: "yy-mm-dd" }); });
+    	</script>
+    	<!-- TODO: placeholder, replace with actual program selection dropdown -->
+    	<label for="fromdate">Program: </label>
+    	<input type="text" name="program" id="program" value="Cer6nguvEqd">
+    	<!-- TODO: placeholder, replace with actual OrgUnti selection dropdown OR choose from user's org unit-->
+    	<label for="fromdate">OrgUnit: </label>
+    	<input type="text" name="orgunit" id="orgunit" value="DiszpKrYNg8">
+    	<label for="fromdate">Period: </label>
+    	<input type="text" id="fromdate" />
+    	<input type="text" id="todate" />
+    	<input id="showeventsbtn" class="btn btn-primary" type="button" value="Show Events" onclick="showEvents()">
+    	</p><p>
     	<table id="div-my-table"></table>
+    	</p>
 	</div>
 
     
