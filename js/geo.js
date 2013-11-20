@@ -1,9 +1,10 @@
+// map and related options and markers
 var map;
 var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
-
 var markers = [];
 var infoWindowContent = [];
 
+// TODO: temporary to set to true whenever we retrieve events to update markers
 var bRetrievedEvents = false;
 
 function initialize_map() {
@@ -16,9 +17,7 @@ function initialize_map() {
 
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-        // Try HTML5 geolocation
-
-
+		//get current position to set user's location
         if (navigator.geolocation) {
 
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -38,8 +37,9 @@ function initialize_map() {
 
         } else {
 
-                // Browser doesn't support Geolocation
-                // Should really tell the user…
+                // Browser doesn't support Geolocation, so simply set latitude and longitude to zero (user can select location by right-clicking map or typing manually)
+	            document.getElementById("latitude").value = 0;
+	        	document.getElementById("longitude").value = 0;
 
         }
         
@@ -63,10 +63,11 @@ function initialize_map() {
 
 function handleNoGeolocation(boolFlag)
 {
-	// Implement as appropriate
+	document.getElementById("latitude").value = 0;
+	document.getElementById("longitude").value = 0;
 }
 
-//Trap a GPS error, log it to console and display on site
+// trap a GPS error, log it to console and display on site
 function gotErr(error) {
     var errors = { 
             1: 'Permission denied',
@@ -76,19 +77,19 @@ function gotErr(error) {
     console.log("Error: " + errors[error.code]);
     $('#debug-latlng').text('GPS position not available');
     alert("Error: " + errors[error.code])
-} //gotErr
+}
 
-//This function gets called when you press the Set Location button
+// helper function to get location
 function get_location() {
 	if (Modernizr.geolocation) {
 		navigator.geolocation.getCurrentPosition(location_found, gotErr, options );
 	} else {
-		// alert("No native support for GeoLocation");
-		document.getElementByID('noLocationSupport').innerHTML = "Geolocation is not supported by your browser.";
+		alert("No native support for GeoLocation");
+		// document.getElementByID('noLocationSupport').innerHTML = "Geolocation is not supported by your browser.";
 	}
 }
 
-// Calls this function when you've successfully obtained the location. 
+// calls this function when you've successfully obtained the location. 
 function location_found(position) {	
 	// set latitude and longitude fields
     document.getElementById("latitude").value = position.coords.latitude;
@@ -102,7 +103,6 @@ function newEvent(){
 }
 
 function setLocation(){
-	// get location, which in turn will open the form to create a new event
 	get_location();
 }
 
@@ -110,15 +110,17 @@ function createEvent(latitude, longitude){
 	
 	// TODO: this should open the event form with latitude and longitude
 	
-	// test code to create a new event
+	// test code to create a new event that can be used to save events from form
 	
 	// Admission Date: eMyVanycQSC
 	// Discharge Date: msodh3rEMJa
 	// Mode of discharge (string): fWIAEtYVEGk
 	// Diagnosis (string): K6uUAvq500H
 	
+	var program = "eBAyeGv0exc";
+	
 	var jsonTest = '{ \
-			  "program": "eBAyeGv0exc", \
+			  "program": "' + program + '", \
 			  "orgUnit": "DiszpKrYNg8", \
 			  "eventDate": "2013-11-11", \
 			  "status": "COMPLETED", \
@@ -140,7 +142,7 @@ function createEvent(latitude, longitude){
 	
 	$.ajax({
 		type:	'post',
-		url:	'/dev/api/events/',
+		url:	dhisAPI + '/api/events/',
 		data: jsonTest,
 		dataType: 'json',
 		contentType:'application/json; charset=utf-8',
@@ -167,9 +169,7 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 	
 	var jsonurl = url + "?orgUnit=" + orgUnit + "&program=" + program + "&startDate=" + startDate +  "&endDate=" + endDate;
 	// old dimensions used - defunct but kept in case will be useful:  + "&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5
-	
-	
-	
+		
 	$.getJSON(jsonurl, function(json){ 
 		
 		// TODO: test output, remove in final version
@@ -273,13 +273,4 @@ function placeMarkers()
         this.setZoom(8);
         google.maps.event.removeListener(boundsListener);
     });*/
-}
-
-function authorize(){
-	jQuery(document).ready(function() {
-		$.post( "localhost/dhis-web-commons-security/login.action", {
-			j_username: "admin", j_password: "district"
-		}
-		);});
-
 }
