@@ -36,7 +36,12 @@
 	    xhReq.send(null);
 	    var serverResponse = JSON.parse(xhReq.responseText);
 	    var dhisAPI = serverResponse.activities.dhis.href;
-	    //alert(serverResponse.activities.dhis.href);
+	    // hack because of recent changes in latest code (i.e. dhis2.org/dev)
+	    var strInvalidUrl = "dhis-web-maintenance-appmanager";
+	    var n = dhisAPI.indexOf(strInvalidUrl); 
+	    if (dhisAPI != -1) {
+	    	dhisAPI = dhisAPI.substring(0, n - 1) + dhisAPI.substring(n + strInvalidUrl.length()); 
+	    }
 	</script>
   <body>
   	<!-- Static navbar -->
@@ -107,7 +112,7 @@
     	</script>
     	<!-- TODO: placeholder, replace with actual program selection dropdown -->
     	<label for="fromdate">Program: </label>
-    	<input type="text" name="program" id="program" value="Cer6nguvEqd">
+    	<input type="text" name="program" id="program" value="eBAyeGv0exc">
     	<!-- TODO: placeholder, replace with actual OrgUnti selection dropdown OR choose from user's org unit-->
     	<label for="fromdate">OrgUnit: </label>
     	<input type="text" name="orgunit" id="orgunit" value="DiszpKrYNg8">

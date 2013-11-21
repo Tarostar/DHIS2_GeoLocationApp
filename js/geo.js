@@ -99,7 +99,7 @@ function location_found(position) {
 function newEvent(){
 	// get position from fields		
 	createEvent(document.getElementById("latitude").value, document.getElementById("longitude").value);
-	alert("created event at " + document.getElementById("latitude").value + " / " + document.getElementById("longitude").value)
+	// alert("created event at " + document.getElementById("latitude").value + " / " + document.getElementById("longitude").value)
 }
 
 function setLocation(){
@@ -107,10 +107,6 @@ function setLocation(){
 }
 
 function showEvents(){
-	
-	// var dateTypeVar = $('#fromdate').datepicker('getDate');
-	
-	/*var fromDate = $( ".fromdate" ).datepicker({ dateFormat: 'yy-mm-dd' }).val();*/
 	var fromDate = $('#fromdate').datepicker().val();
 	var toDate = $('#todate').datepicker().val();
 	retrieve_events(dhisAPI + "/api/events.json", document.getElementById("program").value, fromDate, toDate, document.getElementById("orgunit").value);
@@ -136,8 +132,8 @@ function createEvent(latitude, longitude){
 			  "status": "COMPLETED", \
 			  "storedBy": "admin", \
 			  "coordinate": { \
-				"latitude": "10", \
-				"longitude": "10" \
+				"latitude": "' + latitude + '", \
+				"longitude": "' + longitude + '" \
 			  }, \
 			  "dataValues": [ \
 			    { "dataElement": "qrur9Dvnyt5", "value": "9" }, \
@@ -157,7 +153,10 @@ function createEvent(latitude, longitude){
 		dataType: 'json',
 		contentType:'application/json; charset=utf-8',
 		success:function(json){
-			alert("success");
+			// on success retrieve all values again (this is a bit rough since it depends on user parameters, but demonstrates the idea). 
+			var fromDate = $('#fromdate').datepicker().val();
+			var toDate = $('#todate').datepicker().val();
+			retrieve_events(dhisAPI + "/api/events.json", document.getElementById("program").value, fromDate, toDate, document.getElementById("orgunit").value);
 		},
 		error:function(xhr, status, error){
 			alert((xhr.responseText));
@@ -179,62 +178,94 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 	
 	var jsonurl = url + "?orgUnit=" + orgUnit + "&program=" + program + "&startDate=" + startDate +  "&endDate=" + endDate;
 	// old dimensions used - defunct but kept in case will be useful:  + "&dimension=eMyVanycQSC&dimension=msodh3rEMJa&dimension=K6uUAvq500H&dimension=oZg33kd9taw&dimension=qrur9Dvnyt5
-		
+	
 	$.getJSON(jsonurl, function(json){ 
-		
-		// TODO: test output, remove in final version
-		console.log("JSON "+JSON.stringify(json));
+		//console.log("JSON "+JSON.stringify(json));
 		
 		var $table = $("<table></table>");
 		
 		// metadata
 		$table.append($("<tr><td><b>Orgunit: </b></td><td>" + orgUnit + "</td><td><b>Program: </b></td><td>" + program + "</td><td></td></tr>"));
 		
-		// header
-		$table.append($("<tr><td><b>Diagnosis</b></td><td><b>Age</b></td><td><b>Gender</b></td><td><b>Admission</b></td><td><b>Discharge</b></td></tr>"));
-
-		// TODO:how do we get to these....  item.coordinate.latitude / item.coordinate.longitude
-		// attempting to use them produces javascript error
+		// header titles
+		var title1 = "Field1";
+		var title2 = "Field2";
+		var title3 = "Field3";
+		var title4 = "Field4";
+		var title5 = "Field5";
 		
-		// loop through all events and show values
+		if (program == "eBAyeGv0exc") {
+			title1 = "Diagnosis";
+			title2 = "Age";
+			title3 = "Gender";
+			title4 = "Admission";
+			title5 = "Discharge";
+		}
+		
+		// set header titles
+		$table.append($("<tr><td><b>Lat</b></td><td><b>Long</b></td><td><b>" + title1 + "</b></td><td><b>" + title2 + "</b></td><td><b>" + title3 + "</b></td><td><b>" + title4 + "</b></td><td><b>" + title5 + "</b></td></tr>"));
+		
+		// loop through all events
 	    $.each(json.eventList, function (i, item) {
-	    	if (item.coordinate) {
-	    		alert("found coordinate");
-	    	}
-	    	tableValues = ["-","-","-","-","-"];
+	    	tableValues = ["0","0","-","-","-","-","-"];  	
+	     	
+	    	// loop through values for each event (with some special handling)
+	    	var nIndex = 2;
 	    	 $.each(item.dataValues, function (i, values) {
-	    		 switch (values.dataElement) {
-	    		 	case "K6uUAvq500H": // diagnosis
-	    		 		tableValues[0] = values.value;
-	    		 		break;
-	    		 	case "qrur9Dvnyt5": // age
-	    		 		tableValues[1] = values.value;
-	    		 		break;
-	    		 	case "oZg33kd9taw": // gender
-	    		 		tableValues[2] = values.value;
-	    		 		break;
-	    		 	case "eMyVanycQSC": // admission
-	    		 		tableValues[3] = values.value; 
-	    		 		break;
-	    		 	case "msodh3rEMJa": // discharge
-	    		 		tableValues[4] = values.value; 
-	    		 		break;
-	    		 }
+	    		 if (program == "eBAyeGv0exc") {
+	    			 // special case for this program (since it is the only one we really use we might as well do it prettily
+		    		 switch (values.dataElement) {
+		    		 	case "K6uUAvq500H": // diagnosis
+		    		 		tableValues[2] = values.value;
+		    		 		break;
+		    		 	case "qrur9Dvnyt5": // age
+		    		 		tableValues[3] = values.value;
+		    		 		break;
+		    		 	case "oZg33kd9taw": // gender
+		    		 		tableValues[4] = values.value;
+		    		 		break;
+		    		 	case "eMyVanycQSC": // admission
+		    		 		tableValues[5] = values.value; 
+		    		 		break;
+		    		 	case "msodh3rEMJa": // discharge
+		    		 		tableValues[6] = values.value; 
+		    		 		break;
+		    		 	}
+		    	 	}
+		    		else {
+		    			tableValues[nIndex] = values.value;
+		    			nIndex++;
+		    		}
 	    	 });
 	    	 
+	    	 // handle events with coordinates
+	    	 if (item.coordinate) {
+    			tableValues[0] = item.coordinate.latitude;
+	    		tableValues[1] = item.coordinate.longitude;
+	    		 
+    			// this event has coordinates, put down marker
+	       		 markers.push([item.event, item.coordinate.latitude, item.coordinate.longitude]);
+	       		 infoWindowContent.push( ['<div class="info_content">' +
+	       		                          '<h3><a href="' + item.href + '.xml">' + item.href + '</a></h3>' +
+	       		                          '<p>Org Unit: ' + item.orgUnit + '</p>' +
+	       		                          '<p>Event Date: ' + item.eventDate + '</p>' +
+	       		                          '<p>EStored By: ' + item.storedBy + '</p>' +
+	       		                          '<p>Program: ' + item.program + '</p>' +
+	       		                          '<p>Lat: ' + tableValues[0] + '</p>' +
+	       		                          '<p>Long: ' + tableValues[1] + '</p>' +
+	       		                          '<p>' + title1 + ': ' + tableValues[2] + '</p>' +
+	       		                          '<p>' + title2 + ': ' + tableValues[3] + '</p>' +
+	       		                          '<p>' + title3 + ': ' + tableValues[4] + '</p>' +
+	       		                          '<p>' + title4 + ': ' + tableValues[5] + '</p>' +
+	       		                       	  '<p>' + title5 + ': ' + tableValues[6] + '</p>' +
+	       		                          '</div>']);
+	    	}
+	    	 
+	    	 // insert event into table
 	    	 $table.append($("<tr><td>" + tableValues[0] + "</td><td>" + tableValues[1] + "</td><td>" + tableValues[2] + "</td><td>" + tableValues[3] + "</td><td>" + tableValues[4] + "</td></tr>"));
-    		 
-    		 // add map marker
-    		 markers.push([item.event, Math.floor((Math.random()*40)+20), Math.floor((Math.random()*15))]);
-    		 infoWindowContent.push( ['<div class="info_content">' +
-    		                          '<h3><a href="' + item.href + '">' + item.href + '</a></h3>' +
-    		                          '<p>Org Unit: ' + item.orgUnit + '</p>' +
-    		                          '<p>Event Date: ' + item.eventDate + '</p>' +
-    		                          '<p>EStored By: ' + item.storedBy + '</p>' +
-    		                          '<p>Program: ' + item.program + '</p>' +        '</div>']);
 	    });	    
 	        
-	    $("#div-my-table").append($table);
+	    $("#div-my-table").empty().append($table);
 	    
 	    // flag to track when to update markers
 	    bRetrievedEvents = true;
