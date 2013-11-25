@@ -1,8 +1,3 @@
-<!--<p> Borrowed from example to test functionality </p>
-<p>Your name is: {{name}}</p>
-<p>Your first org unit is: {{organisationUnit}}</p>
--->
-
 <!DOCTYPE html>
 <html>
 	<head>
@@ -11,26 +6,83 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<!-- Bootstrap -->
 		<link href="../css/bootstrap.css" rel="stylesheet" media="screen">
-		    <script src="../js/jquery.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/formjs.js"></script>
-     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+		<link href="../css/bootstrap-select.css" rel="stylesheet">
+		<script src="../js/jquery.js"></script>
+    	<script src="../js/bootstrap.min.js"></script>
+    	<script src="../js/bootstrap-select.js"></script>
+    	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    	<script src="../js/formjs.js"></script>
+    
 	 <script>
-$(function() {
-$( "#datepicker" ).datepicker();
-});
-</script>
+			$(function() {
+			$( "#datepicker" ).datepicker();
+			});
+			$('.selectpicker').selectpicker();
+	</script>
+	    <script type="text/javascript">
+        $(window).on('load', function () {
+
+            $('.selectpicker').selectpicker({
+                'selectedText': 'caw'
+            });
+
+            // $('.selectpicker').selectpicker('hide');
+        });
+    </script>
+
 	</head>
 	
 	<body>
+
+    <div class="container">
+        <form class="form-horizontal" role="form">
+<!--             <div class="form-group">
+                <label for="bs3Select" class="col-lg-2 control-label">Programs for single event without registration</label>
+                <div class="col-lg-10">
+                    <select id="bs3Select" class="selectpicker form-control" data-live-search="true">
+                        <option>Choose a program</option>
+						
+                    </select>
+                </div>
+              </div>
+ -->			  	
+		   	<div class="form-group">
+				<label for="datepicker" class="col-sm-2 control-label">Date: </label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control" id="datepicker" placeholder="Date">
+				</div>
+			</div>
+			<div>
+				<select id="myProgramSelector" onChange>
+				<option value="def" >Choose a program</option>
+				</select>
+			</div>
+
+        </form>
+    </div>
+			
+			
+
 		<form class="form-horizontal well" role="form" id="myForm">
+		<label> </label>
 <!-- 			<p>Date: <input type="text" id="datepicker" /></p> -->
-		   		<div class="form-group">
+<!-- 		   		<div class="form-group">
 			<label for="datepicker" class="col-sm-2 control-label">Date</label>
 			<div class="col-sm-4">
 			  <input type="text" class="form-control" id="datepicker" placeholder="Date">
 			</div>
-		 </div>
+		 </div> -->
 		</form>
+		
+	<script>
+	$(document).ready(function() {
+		getPrograms();
+		populateDataElementForm();
+		//alert(dataElementArray.length);
+		
+});
+ 	
+	</script>			
+		</script>
 	</body>
 </html>
