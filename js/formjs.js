@@ -2,8 +2,9 @@ function populateProgramForm(data){
 	$.each(data.programs, function(index, val){
 		if(val.type == 3){
 		
+			// value: id / href
 			$('#myProgramSelector').append($(document.createElement("option")).
-                        attr("value",val.href + ".json").text(val.name));
+                        attr("value",val.id + "/" + val.href + ".json").text(val.name));
 						//alert(val.href + ".json");
 		}
 	});
@@ -17,7 +18,28 @@ function populateProgramForm(data){
 var dataElementArray = [];
 function populateDataElementForm(){
 	$('#myProgramSelector').change(function(){
-		var selectedProgramURL = $('#myProgramSelector').val();
+		var programValue = $('#myProgramSelector').val();
+		// we know id is first part of value so extract second half
+		var n = programValue.indexOf("/");
+		if (n != -1) {
+			selectedProgramURL = programValue.substring(n + 1);
+			alert(selectedProgramURL);
+			
+			if (Modernizr.localstorage) {
+				localStorage["programID"] = programValue.substring(0, n - 1)
+			} else {
+				// TODO: consider alternatives that do not rely on local storage
+				// no native support for HTML5 storage :(
+				// maybe try dojox.storage or a third-party solution
+				alert("local storage not supported, this app requires HTML5 localStorage support")
+			}
+	    }
+		else
+		{
+			// TODO: better error handling
+				alert("this should never happen, code broken!");
+		}
+		
 		//alert('"'+selectedProgramURL+'"');
 		$.getJSON(selectedProgramURL, function(dataElementURL){
 			var programStageURL = dataElementURL.programStages[0].href + ".json";//dataElement.programStages.href;
@@ -25,7 +47,7 @@ function populateDataElementForm(){
 				//alert(programStageURL);
 			$.getJSON(programStageURL, function(dataElement){
 				$.each(dataElement.programStageDataElements, function(index, val){
-					var typeURL = "http://localhost:8080/api/dataElements/" + val.dataElement.id + ".json";
+					var typeURL = dhisAPI + "/api/dataElements/" + val.dataElement.id + ".json";
 					var type = "";
 					$.getJSON(typeURL, function(dataElementType){
 						var elementWithType = {};
@@ -72,7 +94,7 @@ alert("hi");
 function getPrograms(){
 
 		//$.post("http://localhost:8080/dhis-web-commons/security/login.action",{j_username:"admin", j_password:"district"});
-	  $.getJSON("http://localhost:8080/api/programs.json", function(json) {
+	  $.getJSON(dhisAPI + "/api/programs.json", function(json) {
 		populateProgramForm(json);
                         
 		});

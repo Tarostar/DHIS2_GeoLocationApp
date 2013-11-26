@@ -1,0 +1,21 @@
+	{
+		  {	"name": "Car accidents Records",
+			"kind": "SINGLE_EVENT_WITHOUT_REGISTRATION"
+		   } ,
+			{"name": "Child Programme",
+			"kind": "MULTIPLE_EVENTS_WITH_REGISTRATION"
+		   }, 
+               {
+			"name": "Inpatient morbidity and mortality",
+			"kind": "SINGLE_EVENT_WITHOUT_REGISTRATION"
+		    }, 
+               {
+			"name": "MNCH / PNC (Adult Woman)",
+			"kind": "MULTIPLE_EVENTS_WITH_REGISTRATION"
+		     }, 
+               {
+			"name": "TB program",
+			"kind": "MULTIPLE_EVENTS_WITH_REGISTRATION"
+		      }
+}
+	

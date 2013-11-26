@@ -1,0 +1,76 @@
+<json>
+	<programs>
+		<name>Child Programme</name>
+		<created>2013-03-04T10:41:07.494+0000</created>
+		<lastUpdated>2013-05-30T08:25:42.173+0000</lastUpdated>
+		<type>1</type>
+		<kind>MULTIPLE_EVENTS_WITH_REGISTRATION</kind>
+		<access>
+			<manage>true</manage>
+			<externalize>false</externalize>
+			<write>true</write>
+			<read>true</read>
+			<update>true</update>
+			<delete>true</delete>
+		</access>
+		<href>http://apps.dhis2.org/demo/api/programs/IpHINAT79UW</href>
+		<id>IpHINAT79UW</id>
+	</programs>
+	<programs>
+		<name>Inpatient morbidity and mortality</name>
+		<created>2013-03-04T10:41:07.494+0000</created>
+		<lastUpdated>2013-05-30T08:25:45.919+0000</lastUpdated>
+		<type>3</type>
+		<kind>SINGLE_EVENT_WITHOUT_REGISTRATION</kind>
+		<access>
+			<manage>true</manage>
+			<externalize>false</externalize>
+			<write>true</write>
+			<read>true</read>
+			<update>true</update>
+			<delete>true</delete>
+		</access>
+		<href>http://apps.dhis2.org/demo/api/programs/eBAyeGv0exc</href>
+		<id>eBAyeGv0exc</id>
+	</programs>
+	<programs>
+		<name>MNCH / PNC (Adult Woman)</name>
+		<created>2013-03-04T10:41:07.494+0000</created>
+		<lastUpdated>2013-05-30T08:25:48.598+0000</lastUpdated>
+		<type>1</type>
+		<kind>MULTIPLE_EVENTS_WITH_REGISTRATION</kind>
+		<access>
+			<manage>true</manage>
+			<externalize>false</externalize>
+			<write>true</write>
+			<read>true</read>
+			<update>true</update>
+			<delete>true</delete>
+		</access>
+		<href>http://apps.dhis2.org/demo/api/programs/uy2gU8kT1jF</href>
+		<id>uy2gU8kT1jF</id>
+	</programs>
+	<programs>
+		<name>TB program</name>
+		<created>2013-03-04T10:41:07.494+0000</created>
+		<lastUpdated>2013-05-30T08:25:52.582+0000</lastUpdated>
+		<type>1</type>
+		<kind>MULTIPLE_EVENTS_WITH_REGISTRATION</kind>
+		<access>
+			<manage>true</manage>
+			<externalize>false</externalize>
+			<write>true</write>
+			<read>true</read>
+			<update>true</update>
+			<delete>true</delete>
+		</access>
+		<href>http://apps.dhis2.org/demo/api/programs/ur1Edk5Oe2n</href>
+		<id>ur1Edk5Oe2n</id>
+	</programs>
+	<pager>
+		<page>1</page>
+		<total>4</total>
+		<pageSize>50</pageSize>
+		<pageCount>1</pageCount>
+	</pager>
+</json>
