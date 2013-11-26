@@ -109,7 +109,10 @@ function setLocation(){
 function showEvents(){
 	var fromDate = $('#fromdate').datepicker().val();
 	var toDate = $('#todate').datepicker().val();
-	retrieve_events(dhisAPI + "/api/events.json", document.getElementById("program").value, fromDate, toDate, document.getElementById("orgunit").value);
+	if (localStorage["programID"] !=  null)
+		retrieve_events(dhisAPI + "/api/events.json", localStorage["programID"], fromDate, toDate, document.getElementById("orgunit").value);
+	else
+		alert("Please choose program first.");
 }
 
 function createEvent(latitude, longitude){
@@ -123,10 +126,9 @@ function createEvent(latitude, longitude){
 	// Mode of discharge (string): fWIAEtYVEGk
 	// Diagnosis (string): K6uUAvq500H
 	
-	var program = "eBAyeGv0exc";
 	
 	var jsonTest = '{ \
-			  "program": "' + program + '", \
+			  "program": "' + localStorage["programID"] + '", \
 			  "orgUnit": "DiszpKrYNg8", \
 			  "eventDate": "2013-11-20", \
 			  "status": "COMPLETED", \
