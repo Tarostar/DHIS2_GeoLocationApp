@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="../../assets/ico/favicon.png">
+<title>Students' location</title>
+
+
+<!-- Bootstrap core CSS -->
+<link href="css/bootstrap.css" rel="stylesheet">
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+	<!-- Static navbar -->
+	<div class="navbar navbar-default navbar-static-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="/">Student system</a>
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a target="_self" href="index.html">Location</a></li>
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+	</div>
+
+
+	<div class="container">
+
+		<h1>Students</h1>
+		<p class="lead text-danger"></p>
+
+		<table class="table" id="studentTable">
+			<tr>
+				<th>Student</th>
+				<th>Courses</th>
+				<th>Location</th>
+			</tr>
+		</table>
+
+	</div>
+
+	<div class="container">
+
+		<form id="studentlocationform" name="studentlocationform">
+			<table class="table" id="studentLocationTable">
+			</table>
+			<table class="table">
+				<tr>
+					<td><input id="locationbtn" class="btn btn-primary"
+						type="button" value="Set location"></td>
+				</tr>
+			</table>
+		</form>
+
+	</div>
+
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
+	<script type="text/javascript">
+		app.initialize();
+	</script>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<script src="js/modernizr-latest.js"></script>
+	<script src="js/jquery-1.10.1.min.js"></script>
+	<script src="js/jquery-migrate-1.2.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/assignment.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			getStudentData();
+		});
+	</script>
+
+</body>
+</html>
