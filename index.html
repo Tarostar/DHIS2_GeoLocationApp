@@ -36,11 +36,11 @@
 	    xhReq.send(null);
 	    var serverResponse = JSON.parse(xhReq.responseText);
 	    var dhisAPI = serverResponse.activities.dhis.href;
-	    // hack because of recent changes in latest code (i.e. dhis2.org/dev)
+	    // hack because of recent changes in latest code (i.e. dhis2.org/dev) - will only take effect when needed
 	    var strInvalidUrl = "dhis-web-maintenance-appmanager";
-	    var n = dhisAPI.indexOf(strInvalidUrl); 
-	    if (dhisAPI != -1) {
-	    	dhisAPI = dhisAPI.substring(0, n - 1) + dhisAPI.substring(n + strInvalidUrl.length()); 
+	    var n = dhisAPI.indexOf(strInvalidUrl);
+	    if (n != -1) {
+	    	dhisAPI = dhisAPI.substring(0, n - 1) + dhisAPI.substring(n + strInvalidUrl.length);
 	    }
 	</script>
   <body>
@@ -55,13 +55,6 @@
 	            </button>
 	            <a class="navbar-brand" href="/">Mandalorian GeoLoc app</a>
 	        </div>
-	        <div class="navbar-collapse collapse">
-	            <ul class="nav navbar-nav">
-	                <li><a href="#/view1">/api/me</a></li>
-	                <li><a href="#/view2">System settings</a></li>
-	            </ul>
-	        </div>
-	        <!--/.nav-collapse -->
 	    </div>
 	</div>
 
@@ -77,10 +70,14 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/geo.js"></script>
+    <script src="js/formjs.js"></script>
 
     <script>
 	$(document).ready(function() {
-		initialize_map();		
+		initialize_map();
+		getPrograms();
+		populateDataElementForm();
+		
 		// Sierra Leone: ImspTQPwCqd
 		// Bo - Badjia - Ngelehun CHC
 		// O6uvpzGd5pu;YuQRtpLP10I;DiszpKrYNg8
@@ -108,23 +105,64 @@
     	</p><p>
     	<script>
     		$(function() { $( "#fromdate" ).datepicker({ dateFormat: "yy-mm-dd" }); });
-    		$(function() { $( "#todate" ).datepicker({ dateFormat: "yy-mm-dd" }); });
+    		$(function() { $( "#todate" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date() }); });
     	</script>
     	<!-- TODO: placeholder, replace with actual program selection dropdown -->
-    	<label for="fromdate">Program: </label>
+    	<label for="program">Program: </label>
     	<input type="text" name="program" id="program" value="eBAyeGv0exc">
     	<!-- TODO: placeholder, replace with actual OrgUnti selection dropdown OR choose from user's org unit-->
-    	<label for="fromdate">OrgUnit: </label>
+    	<label for="orgunit">OrgUnit: </label>
     	<input type="text" name="orgunit" id="orgunit" value="DiszpKrYNg8">
-    	<label for="fromdate">Period: </label>
-    	<input type="text" id="fromdate" />
-    	<input type="text" id="todate" />
+    	<label for="period">Period: </label>
+    	<input type="text" id="fromdate" value="2013-11-10" />
+    	<input type="text" id="todate" value="2013-12-24" />
     	<input id="showeventsbtn" class="btn btn-primary" type="button" value="Show Events" onclick="showEvents()">
-    	</p><p>
+    	</p>
+	</div>
+	
+	<div class="eventinput">
+		<p>
+        <form class="form-horizontal" role="form">
+<!--             <div class="form-group">
+                <label for="bs3Select" class="col-lg-2 control-label">Programs for single event without registration</label>
+                <div class="col-lg-10">
+                    <select id="bs3Select" class="selectpicker form-control" data-live-search="true">
+                        <option>Choose a program</option>
+						
+                    </select>
+                </div>
+              </div>
+ -->			  	
+		   	<div class="form-group">
+				<label for="datepicker" class="col-sm-2 control-label">Date: </label>
+				<div class="col-sm-4">
+					<input type="text" class="form-control" id="datepicker" placeholder="Date">
+				</div>
+				<div class="col-sm-4">
+					<select id="myProgramSelector" onChange>
+					<option value="def" >Choose a program</option>
+				</select>
+				</div>
+			</div>
+
+        </form>
+    	
+
+		<form class="form-horizontal well" role="form" id="myForm">
+		<label> </label>
+<!-- 			<p>Date: <input type="text" id="datepicker" /></p> -->
+<!-- 		   		<div class="form-group">
+			<label for="datepicker" class="col-sm-2 control-label">Date</label>
+			<div class="col-sm-4">
+			  <input type="text" class="form-control" id="datepicker" placeholder="Date">
+			</div>
+		 </div> -->
+		</form>
+		</p>
+		<p>
     	<table id="div-my-table"></table>
     	</p>
 	</div>
-
     
 
   </body>

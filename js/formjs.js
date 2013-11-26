@@ -25,7 +25,7 @@ function populateDataElementForm(){
 				//alert(programStageURL);
 			$.getJSON(programStageURL, function(dataElement){
 				$.each(dataElement.programStageDataElements, function(index, val){
-					var typeURL = "http://localhost:8080/api/dataElements/" + val.dataElement.id + ".json";
+					var typeURL = dhisAPI + "/api/dataElements/" + val.dataElement.id + ".json";
 					var type = "";
 					$.getJSON(typeURL, function(dataElementType){
 						var elementWithType = {};
@@ -72,7 +72,7 @@ alert("hi");
 function getPrograms(){
 
 		//$.post("http://localhost:8080/dhis-web-commons/security/login.action",{j_username:"admin", j_password:"district"});
-	  $.getJSON("http://localhost:8080/api/programs.json", function(json) {
+	  $.getJSON(dhisAPI + "/api/programs.json", function(json) {
 		populateProgramForm(json);
                         
 		});

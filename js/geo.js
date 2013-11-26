@@ -128,7 +128,7 @@ function createEvent(latitude, longitude){
 	var jsonTest = '{ \
 			  "program": "' + program + '", \
 			  "orgUnit": "DiszpKrYNg8", \
-			  "eventDate": "2013-11-11", \
+			  "eventDate": "2013-11-20", \
 			  "status": "COMPLETED", \
 			  "storedBy": "admin", \
 			  "coordinate": { \
@@ -136,10 +136,10 @@ function createEvent(latitude, longitude){
 				"longitude": "' + longitude + '" \
 			  }, \
 			  "dataValues": [ \
-			    { "dataElement": "qrur9Dvnyt5", "value": "9" }, \
+			    { "dataElement": "qrur9Dvnyt5", "value": "19" }, \
 			    { "dataElement": "oZg33kd9taw", "value": "Female" }, \
-			    { "dataElement": "msodh3rEMJa", "value": "2013-11-11" }, \
-				{ "dataElement": "eMyVanycQSC", "value": "2013-10-11" }, \
+			    { "dataElement": "msodh3rEMJa", "value": "2013-11-21" }, \
+				{ "dataElement": "eMyVanycQSC", "value": "2013-11-11" }, \
 				{ "dataElement": "fWIAEtYVEGk", "value": "Transferred" }, \
 				{ "dataElement": "K6uUAvq500H", "value": "A029 Salmonella infection, unspecified" } \
 			  ] \
