@@ -109,7 +109,10 @@ function setLocation(){
 function showEvents(){
 	var fromDate = $('#fromdate').datepicker().val();
 	var toDate = $('#todate').datepicker().val();
-	retrieve_events(dhisAPI + "/api/events.json", document.getElementById("program").value, fromDate, toDate, document.getElementById("orgunit").value);
+	if (localStorage["programID"] !=  null)
+		retrieve_events(dhisAPI + "/api/events.json", localStorage["programID"], fromDate, toDate, document.getElementById("orgunit").value);
+	else
+		alert("Please choose program first.");
 }
 
 function createEvent(latitude, longitude){
@@ -123,12 +126,11 @@ function createEvent(latitude, longitude){
 	// Mode of discharge (string): fWIAEtYVEGk
 	// Diagnosis (string): K6uUAvq500H
 	
-	var program = "eBAyeGv0exc";
 	
 	var jsonTest = '{ \
-			  "program": "' + program + '", \
+			  "program": "' + localStorage["programID"] + '", \
 			  "orgUnit": "DiszpKrYNg8", \
-			  "eventDate": "2013-11-11", \
+			  "eventDate": "2013-11-20", \
 			  "status": "COMPLETED", \
 			  "storedBy": "admin", \
 			  "coordinate": { \
@@ -136,10 +138,10 @@ function createEvent(latitude, longitude){
 				"longitude": "' + longitude + '" \
 			  }, \
 			  "dataValues": [ \
-			    { "dataElement": "qrur9Dvnyt5", "value": "9" }, \
+			    { "dataElement": "qrur9Dvnyt5", "value": "19" }, \
 			    { "dataElement": "oZg33kd9taw", "value": "Female" }, \
-			    { "dataElement": "msodh3rEMJa", "value": "2013-11-11" }, \
-				{ "dataElement": "eMyVanycQSC", "value": "2013-10-11" }, \
+			    { "dataElement": "msodh3rEMJa", "value": "2013-11-21" }, \
+				{ "dataElement": "eMyVanycQSC", "value": "2013-11-11" }, \
 				{ "dataElement": "fWIAEtYVEGk", "value": "Transferred" }, \
 				{ "dataElement": "K6uUAvq500H", "value": "A029 Salmonella infection, unspecified" } \
 			  ] \
