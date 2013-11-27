@@ -17,31 +17,7 @@ function initialize_map() {
 
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 
-		//get current position to set user's location
-        if (navigator.geolocation) {
-
-                navigator.geolocation.getCurrentPosition(function(position) {
-                		// center map
-                        var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                        map.setCenter(pos);
-                     
-                        // set latitude and longitude fields
-                        document.getElementById("latitude").value = position.coords.latitude;
-                    	document.getElementById("longitude").value = position.coords.longitude;
-                      
-                }, function() {
-
-                        handleNoGeolocation(true);
-
-                });
-
-        } else {
-
-                // Browser doesn't support Geolocation, so simply set latitude and longitude to zero (user can select location by right-clicking map or typing manually)
-	            document.getElementById("latitude").value = 0;
-	        	document.getElementById("longitude").value = 0;
-
-        }
+		get_location();
         
         // function to get google coordinates and put them in the long/lat fields
         google.maps.event.addListener(map, "rightclick", function(event) {     	
@@ -67,26 +43,33 @@ function handleNoGeolocation(boolFlag)
 	document.getElementById("longitude").value = 0;
 }
 
-// trap a GPS error, log it to console and display on site
-function gotErr(error) {
-    var errors = { 
-            1: 'Permission denied',
-            2: 'Position unavailable',
-            3: 'Request timeout'
-        };
-    console.log("Error: " + errors[error.code]);
-    $('#debug-latlng').text('GPS position not available');
-    alert("Error: " + errors[error.code])
-}
-
 // helper function to get location
 function get_location() {
-	if (Modernizr.geolocation) {
-		navigator.geolocation.getCurrentPosition(location_found, gotErr, options );
-	} else {
-		alert("No native support for GeoLocation");
-		// document.getElementByID('noLocationSupport').innerHTML = "Geolocation is not supported by your browser.";
-	}
+	//get current position to set user's location
+    if (navigator.geolocation) {
+
+            navigator.geolocation.getCurrentPosition(function(position) {
+            		// center map
+                    var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    map.setCenter(pos);
+                 
+                    // set latitude and longitude fields
+                    document.getElementById("latitude").value = position.coords.latitude;
+                	document.getElementById("longitude").value = position.coords.longitude;
+                  
+            }, function() {
+
+                    handleNoGeolocation(true);
+
+            });
+
+    } else {
+
+            // Browser doesn't support Geolocation, so simply set latitude and longitude to zero (user can select location by right-clicking map or typing manually)
+            document.getElementById("latitude").value = 0;
+        	document.getElementById("longitude").value = 0;
+
+    }
 }
 
 // calls this function when you've successfully obtained the location. 

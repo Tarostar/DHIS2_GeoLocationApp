@@ -9,3 +9,9 @@
 .bold {
 	font-weight:bold;
 }
+
+.hinttext {
+	font-size: 75%;
+	text-align: center;
+	font-style:italic;
+}

@@ -31,17 +31,29 @@
 
   </head>
   <script>
+  		var dhisAPI = "http://localhost:8080/dhis-web-maintenance-appmanager";
 	    var xhReq = new XMLHttpRequest();
-	    xhReq.open("GET", "manifest.webapp", false);
+	    xhReq.open("GET", "manifest.webapp", true);
+		 // Response handlers.
+	    xhReq.onload = function() {
+	      var text = xhReq.responseText;
+	      
+	      var serverResponse = JSON.parse(xhReq.responseText);
+		    dhisAPI = serverResponse.activities.dhis.href;
+		    // hack because of recent changes in latest code (i.e. dhis2.org/dev) - will only take effect when needed
+		    var strInvalidUrl = "dhis-web-maintenance-appmanager";
+		    var n = dhisAPI.indexOf(strInvalidUrl);
+		    if (n != -1) {
+		    	dhisAPI = dhisAPI.substring(0, n - 1) + dhisAPI.substring(n + strInvalidUrl.length);
+		    }
+	    };
+
+	    xhReq.onerror = function() {
+	    	alert('Could not retrieve XMLHTTPRequest, using : ' + dhisAPI);
+	    };
+	    
 	    xhReq.send(null);
-	    var serverResponse = JSON.parse(xhReq.responseText);
-	    var dhisAPI = serverResponse.activities.dhis.href;
-	    // hack because of recent changes in latest code (i.e. dhis2.org/dev) - will only take effect when needed
-	    var strInvalidUrl = "dhis-web-maintenance-appmanager";
-	    var n = dhisAPI.indexOf(strInvalidUrl);
-	    if (n != -1) {
-	    	dhisAPI = dhisAPI.substring(0, n - 1) + dhisAPI.substring(n + strInvalidUrl.length);
-	    }
+	    
 	</script>
   <body>
   	<!-- Static navbar -->
@@ -59,7 +71,10 @@
 	</div>
 
     <h1>Mandalorian Geo</h1>
+    <p>
     <div id="map-canvas" class="container map"></div>
+     <div class="hinttext">Hint: right-click on map to set location.</div>
+     </p>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- <script src="//code.jquery.com/jquery.js"></script> -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
@@ -70,7 +85,7 @@
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/geo.js"></script>
-    <!-- <script src="js/formjs.js"></script> -->
+    <script src="js/formjs.js"></script>
 
     <script>
 	$(document).ready(function() {
