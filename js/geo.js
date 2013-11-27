@@ -109,10 +109,12 @@ function setLocation(){
 function showEvents(){
 	var fromDate = $('#fromdate').datepicker().val();
 	var toDate = $('#todate').datepicker().val();
-	if (localStorage["programID"] !=  null)
-		retrieve_events(dhisAPI + "/api/events.json", localStorage["programID"], fromDate, toDate, document.getElementById("orgunit").value);
-	else
+	if (localStorage["programID"] !=  null && localStorage["orgUnitID"] !=  null)
+		retrieve_events(dhisAPI + "/api/events.json", localStorage["programID"], fromDate, toDate, localStorage["orgUnitID"]);
+	else if (localStorage["programID"] ==  null)
 		alert("Please choose program first.");
+	else
+		alert("Please choose org unit first.");
 }
 
 function createEvent(latitude, longitude){
@@ -155,10 +157,15 @@ function createEvent(latitude, longitude){
 		dataType: 'json',
 		contentType:'application/json; charset=utf-8',
 		success:function(json){
-			// on success retrieve all values again (this is a bit rough since it depends on user parameters, but demonstrates the idea). 
+			// on success retrieve all values again (this is a bit rough since it depends on user parameters, but demonstrates the idea).
 			var fromDate = $('#fromdate').datepicker().val();
 			var toDate = $('#todate').datepicker().val();
-			retrieve_events(dhisAPI + "/api/events.json", document.getElementById("program").value, fromDate, toDate, document.getElementById("orgunit").value);
+			if (localStorage["programID"] !=  null && localStorage["orgUnitID"] !=  null)
+				retrieve_events(dhisAPI + "/api/events.json", localStorage["programID"], fromDate, toDate, localStorage["orgUnitID"]);
+			else if (localStorage["programID"] ==  null)
+				alert("Please choose program first.");
+			else
+				alert("Please choose org unit first.");
 		},
 		error:function(xhr, status, error){
 			alert((xhr.responseText));
@@ -317,3 +324,27 @@ function placeMarkers()
         google.maps.event.removeListener(boundsListener);
     });*/
 }
+
+function populateOrgUnit(selectedProgramURL){
+	
+	$.getJSON(selectedProgramURL, function(json){
+		
+		// loop through all events
+	    $.each(json.organisationUnits, function (i, orgUnit) {
+	    	$('#selOrgUnit').append($(document.createElement("option")).attr("value", orgUnit.id).text(orgUnit.name));
+	    });	
+	});
+	    
+	// change handler - will store orgUnit ID to localStorage
+    $('#selOrgUnit').change(function(){
+			
+		if (Modernizr.localstorage) {
+			localStorage["orgUnitID"] = $('#selOrgUnit').val();
+		} else {
+			// TODO: consider alternatives that do not rely on local storage
+			// no native support for HTML5 storage :(
+			// maybe try dojox.storage or a third-party solution
+			alert("local storage not supported, this app requires HTML5 localStorage support");
+		}
+    });	    
+};
