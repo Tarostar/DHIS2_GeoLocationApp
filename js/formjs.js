@@ -11,8 +11,9 @@ function populateProgramForm(data){
 		}
 	});
 };
-var dataElementArray = [];
+
 function populateDataElementForm(){
+var dataElementArray = [];
 	$('#myProgramSelector').change(function(){
 		var programValue = $('#myProgramSelector').val();
 		// we know id is first part of value so extract second half
@@ -51,63 +52,58 @@ function populateDataElementForm(){
 						var elementWithType = {};
 						elementWithType["name"] = val.dataElement.name;
 						elementWithType["type"] = dataElementType.type;
-/* 						if (dataElementType.optionSet != null)
+
+						if (dataElementType.optionSet != null)
 						{
 						
-							var optionSetUrl = dataElementType.optionSet.href + ".json";//
+							var optionSetUrl = dataElementType.optionSet.href + ".json";
+							
 							
 							var optionSetArray = [];
 							$.getJSON(optionSetUrl, function(dataoption){
-/* 								$.each(dataoption.options, function(index, val){
-								//alert(val);
-									optionSetArray.push(val);
-								}); */
-								/*var str = dataoption.options;
-						elementWithType["options"] = str.split(',');
-						alert(elementWithType["options"] );
-							});
-
+								$.each(dataoption.options, function(index1, val1){
 								
-
-						} */
+									optionSetArray.push(val1);
+									
+								}); 
+																	
+								elementWithType["options"] = optionSetArray;
+								console.log(elementWithType);
+								
+								dataElementArray.push(elementWithType);
+								if(dataElementArray.length == dataElement.programStageDataElements.length)
+								{
+									createForm(dataElementArray);
+								}	 
 						
-						//alert(elementWithType);
-						dataElementArray.push(elementWithType);
-						//console.log(index +' '+ dataElement.programStageDataElements.length);
-						if(index == (dataElement.programStageDataElements.length - 1))
-						{
-							console.log(dataElementArray);
-						//document.write("hellooooo");
-							createForm(dataElementArray);
-						}		//console.log(dataElementType);
-								//alert(val.dataElement.name + ": " + dataElementType.type);
-								
+							});
+						} 
+						else {
+							dataElementArray.push(elementWithType);
+							if(dataElementArray.length == dataElement.programStageDataElements.length)
+							{
+								createForm(dataElementArray);
+							}	 							
+						}
+						
+						
 								
 					});
 					
+					
+					
 				});
-				//alert(dataElementArray[0]);
-				//createForm(dataElementArray);
+
 			});		
 
 		});
-		//createForm(dataElementArray);
+		
 	});
 };
 
 function getCreateForm(){
 	//alert(
 };
-		/*$('#myProgramSelector').change(function(){
-alert("hi");
-//document.write("ggfgfg"+ $("#myProgramSelector").val() +"gfgfg");
-
-	var selectedProgramURL = $('#myProgramSelector').val();
-	alert(selectedProgramURL);
-	$.getJSON(selectedProgramURL, function(dataElement){
-		var programStageURL = dataElement.programStages.href;
-			alert(programStageURL);
-	});*/
 
 
 
@@ -123,65 +119,39 @@ function getPrograms(){
 
 
 
-/*$(document).ready(function() {
-	$.post("http://apps.dhis2.org/demo/dhis-web-commons/security/login.action",{j_username:"admin", j_password:"district"});
-    alert("hi");
-    $.getJSON("http://apps.dhis2.org/demo/api/dataDictionaries.json", function(data) {
-    // Get the element with id summary and set the inner text to the result.
-    	var obj = data.cookie_status;
-       alert(obj);
-    $('#myForm').append(obj.[0]);
-});
-});*/
-
-function createForm(dataElementArray){//(dataElementsArray){
+function createForm(anArray){
 	  //var json = [{"name":"Age", "type":"int"}, {"name":"Gender", "type":"string", "options":["Male","Female","N/A"]}]; //, "type":"int"},{"name":"gender", "type":"string"}]';
-	  for (var i = 0; i < dataElementArray.length; i++) {
-	   //for (var j = 0; j < dataElementArray.length; j++)
-	  
-		  var name = dataElementArray[i].name;
-		 // alert( dataElementArray[i].name);
-		  var type = dataElementArray[i].type;
-		  		  //alert( dataElementArray[i].options);
 
-/* 		  var option_menu = new Array();
- 		  if (dataElementArray[i].length = 3)
-		  {
-		  
-				 option_menu  = dataElementArray[i].options;
-				 alert( dataElementArray[i].options);
-				for (i=0; i<= option_menu.length; i++)
-				alert(option_menu[i]);
-		  } */
-		  
+	  $.each(anArray, function(i, v){
+		  var name = v.name;
+		  var type = v.type;
 		  
 		  var htmltext = '<div class="form-group">';
 		  htmltext += '<label for="input"' + name + ' class="col-sm-2 control-label">' + name + '</label>';
 		  htmltext += '<div class="col-sm-4">';
- 		 /* if(options.length != 0)
-		  {  
-		  htmltext += '<select onChange>';
-		  $.each(options, function( val){
-				htmltext += '  <option value="def" >' + options.val +'</option>';
-		  });
-		  htmltext += '</select>';
-		   }else{  */
-					  htmltext += '<input type="' + type + '" class="form-control" id="input' + name + '" placeholder="' + name + '">';
+		
+			//TODO: find a way to check if the key options exist in the json v or not
+ 		  if (v.options != undefined)
+		  {
+				htmltext += '<select onChange>';				 
+				 
+				$.each(v.options, function(j, w){
+					htmltext += '<option value="' + w + '">' + w + '</option>';
+					
+				});
+				 htmltext += '</select>';
+		  } 
+		  
 
-		  //}
+		   else
+		   {
+				htmltext += '<input type="' + type + '" class="form-control" id="input' + name + '" placeholder="' + name + '">';
+			}
 		  
 		  htmltext += '</div>';
 		  htmltext += '</div>';
-/*		  $('#myForm').append("<div class=\"form-group\">");
-		  $('#myForm').append("<label for=\"input" + name + "\" class=\"col-sm-2 control-label\">" + name + "</label>");
-		  $('#myForm').append("<div class=\"col-sm-4\">");
-		  $('#myForm').append("<input type=\"" + json[i].type + "\" class=\"form-control\" id=\"input" + name + " placeholder=\"" + name + ">");
-	      $('#myForm').append("</div>");
-		  $('#myForm').append("</div>");
-	*/
-	alert(htmltext);
 		  $('#myForm').append(htmltext);
-	  };
+	  });
 
 };
 
