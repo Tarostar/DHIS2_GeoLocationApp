@@ -4,8 +4,8 @@ var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
 var markers = [];
 var infoWindowContent = [];
 
-// TODO: temporary to set to true whenever we retrieve events to update markers
-var bRetrievedEvents = false;
+// TODO: this was used during early testing, can be removed (along with all instances of bRetrievedEvents) once current method has been confirmed working 
+// var bRetrievedEvents = false;
 
 function initialize_map() {
 
@@ -25,13 +25,14 @@ function initialize_map() {
         	document.getElementById("longitude").value = event.latLng.lng();
         });
         
+        // TODO: this was used during early testing, can be removed (along with all instances of bRetrievedEvents) once current method has been confirmed working
         // place markers when idle, but only if new events have been retrieved
-        google.maps.event.addListener(map, "idle", function(event) {
+        /*google.maps.event.addListener(map, "idle", function(event) {
         	if (bRetrievedEvents == true) {
         		// add map marker
         		placeMarkers();
         	}
-        });
+        });*/
         
         
 		
@@ -260,14 +261,16 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 	    $("#div-my-table").empty().append($table);
 	    
 	    // flag to track when to update markers
-	    bRetrievedEvents = true;
+	    // bRetrievedEvents = true;
+	    
+	    placeMarkers();
 	});
 }
 
 function placeMarkers()
 {
 	// we only place markers if we actually got some new event (this is because markers are at the moment set when google map goes idle and this flag is true)
-	bRetrievedEvents = false;
+	// bRetrievedEvents = false;
 	
 	// TODO: add images to markers (maybe use url to image)
 	// var image = 'images/xxx.png';
@@ -314,8 +317,21 @@ function populateOrgUnit(selectedProgramURL){
 		
 		// loop through all events
 	    $.each(json.organisationUnits, function (i, orgUnit) {
-	    	$('#selOrgUnit').append($(document.createElement("option")).attr("value", orgUnit.id).text(orgUnit.name));
-	    });	
+	    	if (orgUnit.name == "Ngelehun CHC")
+	    	{
+	    		// test hack to ensure this orgUnit is always selected as default as we know this typically has events
+	    		var option = document.createElement("option");
+	    	    option.text = orgUnit.name;
+	    	    option.value = orgUnit.id;
+	    	    $('#selOrgUnit').append(option);
+	    	    option.selected=true;    		
+	    		
+	    	}
+	    	else
+	    		$('#selOrgUnit').append($(document.createElement("option")).attr("value", orgUnit.id).text(orgUnit.name));
+	    });
+	    
+	    
 	});
 	    
 	// change handler - will store orgUnit ID to localStorage
