@@ -4,8 +4,8 @@ var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
 var markers = [];
 var infoWindowContent = [];
 
-// TODO: this was used during early testing, can be removed (along with all instances of bRetrievedEvents) once current method has been confirmed working 
-// var bRetrievedEvents = false;
+// TODO: temporary to set to true whenever we retrieve events to update markers
+var bRetrievedEvents = false;
 
 function initialize_map() {
 
@@ -25,14 +25,13 @@ function initialize_map() {
         	document.getElementById("longitude").value = event.latLng.lng();
         });
         
-        // TODO: this was used during early testing, can be removed (along with all instances of bRetrievedEvents) once current method has been confirmed working
         // place markers when idle, but only if new events have been retrieved
-        /*google.maps.event.addListener(map, "idle", function(event) {
+        google.maps.event.addListener(map, "idle", function(event) {
         	if (bRetrievedEvents == true) {
         		// add map marker
         		placeMarkers();
         	}
-        });*/
+        });
         
         
 		
@@ -82,8 +81,9 @@ function location_found(position) {
 
 function newEvent(){
 	// get position from fields		
-	createEvent(document.getElementById("latitude").value, document.getElementById("longitude").value);
+	//createEvent(document.getElementById("latitude").value, document.getElementById("longitude").value);
 	// alert("created event at " + document.getElementById("latitude").value + " / " + document.getElementById("longitude").value)
+	
 }
 
 function setLocation(){
@@ -101,8 +101,8 @@ function showEvents(){
 		alert("Please choose org unit first.");
 }
 
-function createEvent(latitude, longitude){
-	
+function createEvent(jsonTest){
+	//Changed the parameter to jsonTest that we will get from the formjs.js
 	// TODO: this should open the event form with latitude and longitude
 	
 	// test code to create a new event that can be used to save events from form
@@ -112,7 +112,7 @@ function createEvent(latitude, longitude){
 	// Mode of discharge (string): fWIAEtYVEGk
 	// Diagnosis (string): K6uUAvq500H
 	
-	
+/*	
 	var jsonTest = '{ \
 			  "program": "' + localStorage["programID"] + '", \
 			  "orgUnit": "DiszpKrYNg8", \
@@ -124,7 +124,7 @@ function createEvent(latitude, longitude){
 				"longitude": "' + longitude + '" \
 			  }, \
 			  "dataValues": [ \
-			    { "dataElement": "qrur9Dvnyt5", "value": "19" }, \
+			    { "dataElement": "qrur9Dvnyt5", "value": '+ "19" }, \
 			    { "dataElement": "oZg33kd9taw", "value": "Female" }, \
 			    { "dataElement": "msodh3rEMJa", "value": "2013-11-21" }, \
 				{ "dataElement": "eMyVanycQSC", "value": "2013-11-11" }, \
@@ -132,15 +132,18 @@ function createEvent(latitude, longitude){
 				{ "dataElement": "K6uUAvq500H", "value": "A029 Salmonella infection, unspecified" } \
 			  ] \
 			}';
-	
-	
+*/	
+	//console.log( 'jsonObj = '+JSON.stringify(jsonTest));
 	$.ajax({
-		type:	'post',
-		url:	dhisAPI + '/api/events/',
-		data: jsonTest,
-		dataType: 'json',
-		contentType:'application/json; charset=utf-8',
+		type:	'POST',
+		url: dhisAPI + '/api/events/',
+		data: JSON.stringify(jsonTest),
+		headers:{
+			'Content-Type':'application/json',
+			'Accept' : 'application/json'
+		},
 		success:function(json){
+		alert('json '+ json);
 			// on success retrieve all values again (this is a bit rough since it depends on user parameters, but demonstrates the idea).
 			var fromDate = $('#fromdate').datepicker().val();
 			var toDate = $('#todate').datepicker().val();
@@ -157,6 +160,13 @@ function createEvent(latitude, longitude){
 	});
 }
 
+function sortJson(data, prop){
+	return data.sort(function( a, b){
+		var x = a[prop];
+		var y = b[prop];
+		return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+	});
+}
 // TODO: this should be invoked by user for a specific program (potentially also filter for location area)
 function retrieve_events(url, program, startDate, endDate, orgUnit)
 {
@@ -261,16 +271,14 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 	    $("#div-my-table").empty().append($table);
 	    
 	    // flag to track when to update markers
-	    // bRetrievedEvents = true;
-	    
-	    placeMarkers();
+	    bRetrievedEvents = true;
 	});
 }
 
 function placeMarkers()
 {
 	// we only place markers if we actually got some new event (this is because markers are at the moment set when google map goes idle and this flag is true)
-	// bRetrievedEvents = false;
+	bRetrievedEvents = false;
 	
 	// TODO: add images to markers (maybe use url to image)
 	// var image = 'images/xxx.png';
@@ -311,27 +319,16 @@ function placeMarkers()
     });*/
 }
 
-function populateOrgUnit(selectedProgramURL){
+/* function populateOrgUnit(selectedProgramURL){
 	
 	$.getJSON(selectedProgramURL, function(json){
 		
+		//JSON.sort(json.organisationUnits);
 		// loop through all events
+		sortJson(json.organisationUnits, "name");
 	    $.each(json.organisationUnits, function (i, orgUnit) {
-	    	if (orgUnit.name == "Ngelehun CHC")
-	    	{
-	    		// test hack to ensure this orgUnit is always selected as default as we know this typically has events
-	    		var option = document.createElement("option");
-	    	    option.text = orgUnit.name;
-	    	    option.value = orgUnit.id;
-	    	    $('#selOrgUnit').append(option);
-	    	    option.selected=true;    		
-	    		
-	    	}
-	    	else
-	    		$('#selOrgUnit').append($(document.createElement("option")).attr("value", orgUnit.id).text(orgUnit.name));
-	    });
-	    
-	    
+	    	$('#selOrgUnit').append($(document.createElement("option")).attr("value", orgUnit.id).text(orgUnit.name));
+	    });	
 	});
 	    
 	// change handler - will store orgUnit ID to localStorage
@@ -347,3 +344,4 @@ function populateOrgUnit(selectedProgramURL){
 		}
     });	    
 };
+ */

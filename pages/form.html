@@ -8,20 +8,17 @@
 		<script src="../js/jquery.js"></script>
     	<script src="../js/bootstrap.min.js"></script>
     	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-    	<script src="../js/formjs.js"></script>
-  
+  	</head>
+		<body>
 
-	</head>
-	
-	<body>
-
-    <div class="container">
-        <form class="form-horizontal" role="form" id="myForm">
+    <div class="container">			
 			<div>
 				<select id="myProgramSelector" onChange>
 				<option value="def" >Choose a program</option>
 				</select>
 			</div>
+        <form class="form-horizontal" role="form" id="myForm">
+
 
         </form>
     </div>
@@ -29,12 +26,31 @@
 	<script>
 	$(document).ready(function() {
 		getPrograms();
+//getProgramData();
 		populateDataElementForm();
+//getProgramData();
 		//alert(dataElementArray.length);
 		
 	});
  	
-	</script>			
+	</script>
+    <!--	<table class="table" id="myForm">
+			</table>
+			<table class="table">
+				<tr>
+					<td><input id="savebtn" class="btn btn-primary"
+						type="button" value="Save these data please!!"></td>
+				</tr>
+			</table>	
+<!--<button type="button">save data please</button>-->
+<!--<script><!--document.forms["myform"].submit();--> <!--/script> -->
+<!-- <script> 
+<!-- $('#savebtn').on('click', function(e) {
+<!--Alert(waaw);
+<!--	e.preventDefault();
+<!--	saveEventData();
+<!--});
+<!--</script --> 
 	
 	</body>
 </html>

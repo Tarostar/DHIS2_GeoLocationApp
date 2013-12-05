@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
+  <meta charset="utf-8" />
     <title>Mandalorian Geolocation App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="css/geo.css" rel="stylesheet" media="screen">
 
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="../../assets/js/html5shiv.js"></script>
-      <script src="../../assets/js/respond.min.js"></script>
-    <![endif]-->
 
     <style>
 		html,body {
@@ -28,34 +24,12 @@
 		}
 		
 	</style>
+	
 
   </head>
-  <script>
-  		var dhisAPI = "http://localhost:8080/dhis-web-maintenance-appmanager";
-	    var xhReq = new XMLHttpRequest();
-	    xhReq.open("GET", "manifest.webapp", true);
-		 // Response handlers.
-	    xhReq.onload = function() {
-	      var text = xhReq.responseText;
-	      
-	      var serverResponse = JSON.parse(xhReq.responseText);
-		    dhisAPI = serverResponse.activities.dhis.href;
-		    // hack because of recent changes in latest code (i.e. dhis2.org/dev) - will only take effect when needed
-		    var strInvalidUrl = "dhis-web-maintenance-appmanager";
-		    var n = dhisAPI.indexOf(strInvalidUrl);
-		    if (n != -1) {
-		    	dhisAPI = dhisAPI.substring(0, n - 1) + dhisAPI.substring(n + strInvalidUrl.length);
-		    }
-	    };
 
-	    xhReq.onerror = function() {
-	    	alert('Could not retrieve XMLHTTPRequest, using : ' + dhisAPI);
-	    };
-	    
-	    xhReq.send(null);
-	    
-	</script>
   <body>
+  
   	<!-- Static navbar -->
 	<div class="navbar navbar-default navbar-static-top">
 	    <div class="container">
@@ -75,9 +49,7 @@
     <div id="map-canvas" class="container map"></div>
      <div class="hinttext">Hint: right-click on map to set location.</div>
      </p>
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!-- <script src="//code.jquery.com/jquery.js"></script> -->
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    
     <script src="http://modernizr.com/downloads/modernizr-latest.js"></script>
     <!-- Important to include jquery before bootstrap -->
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
@@ -89,54 +61,53 @@
 
     <script>
 	$(document).ready(function() {
+		loadmanifest();
 		initialize_map();
 		$("#programDIV").load("pages/form.html", function(){
          });	
-		
-		// Sierra Leone: ImspTQPwCqd
-		// Bo - Badjia - Ngelehun CHC
-		// O6uvpzGd5pu;YuQRtpLP10I;DiszpKrYNg8
-			
-		// Bombali - Bombali Sebora - Pate Bana CHP
-		// fdc6uOvgoji;KKkLOTpMXGV;wzvDhS0TkAF
-		// TODO: delete: moved to geo.js showEvents()
-		/* retrieve_events(dhisAPI + "/api/events.json", "eBAyeGv0exc", "2013-11-01", "2013-12-12", "DiszpKrYNg8"); */
 	});
+	
 	</script>
 
 	<!-- google map for selection and showin location -->
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-    
-    <!-- button for user to create new event, should open the form for the users unit with location-->
-    <!-- TODO: position better! -->
-    <div class="user_input_section">
-    	<p>
+	
+    <div class="user_input_section">		
+	<!-- Program selector -->
+<div id="programDIV">
+
+</div>
+<!--     	<p>
     	<label for="latitude">Latitude</label>
     	<input type="number" name="latitude" id="latitude" value=0>
     	<label for="longitude">Longitude</label>
     	<input type="number" name="longitude" id="longitude" value=0>
     	<input id="eventbtn" class="btn btn-primary" type="button" value="New Event" onclick="newEvent()">
     	<input id="setLocationbtn" class="btn btn-primary" type="button" value="Set My Location" onclick="setLocation()">
-    	</p><p>
+    	</p>-->
+		<p> 
     	<script>
-    		$(function() { $( "#fromdate" ).datepicker({ dateFormat: "yy-mm-dd" }); });
+    	//$(function() { $( "#eventdate" ).datepicker({ dateFormat: "yy-mm-dd"}); });
+		$(function() { $( "#eventdate" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); });
+    		$(function() { $( "#fromdate" ).datepicker({ dateFormat: "yy-mm-dd" , defaultDate: new Date()}); });
     		$(function() { $( "#todate" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date() }); });
     	</script>
     	<!-- TODO: placeholder, replace with actual OrgUnti selection dropdown OR choose from user's org unit-->
-    	<label for="orgunit">OrgUnit: </label>
+    	<!-- <label for="orgunit">OrgUnit: </label>
     	<select id="selOrgUnit" onChange>
 				<option value="def" >Choose a orgUnit</option>
-		</select>
-    	<!-- <input type="text" name="orgunit" id="orgunit" value="DiszpKrYNg8"> -->
-    	<label for="period">Period: </label>
+		</select> -->
+    	<!-- <input type="text" name="orgunit" id="orgunit" value="DiszpKrYNg8"> -->		
+
+
+    	<label for="period">Start: </label>
     	<input type="text" id="fromdate" value="2013-11-10" />
+		<label for="period">End: </label>
     	<input type="text" id="todate" value="2013-12-24" />
-    	<input id="showeventsbtn" class="btn btn-primary" type="button" value="Show Events" onclick="showEvents()">
+    	<input id="showeventsbtn" class="btn btn-primary" type="button" value="Show Events" onclick="showEvents()"/>
 		<table id="div-my-table"></table>
     	</p>
-		<!-- Program selector -->
-		<div id="programDIV">				
-		</div>
+
 	</div>
 	    
 
