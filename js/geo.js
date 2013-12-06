@@ -4,8 +4,8 @@ var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 0 };
 var markers = [];
 var infoWindowContent = [];
 
-// TODO: temporary to set to true whenever we retrieve events to update markers
-var bRetrievedEvents = false;
+// TODO: this was used during early testing, can be removed (along with all instances of bRetrievedEvents) once current method has been confirmed working 
+// var bRetrievedEvents = false;
 
 function initialize_map() {
 
@@ -25,15 +25,14 @@ function initialize_map() {
         	document.getElementById("longitude").value = event.latLng.lng();
         });
         
+        // TODO: this was used during early testing, can be removed (along with all instances of bRetrievedEvents) once current method has been confirmed working
         // place markers when idle, but only if new events have been retrieved
-        google.maps.event.addListener(map, "idle", function(event) {
+        /*google.maps.event.addListener(map, "idle", function(event) {
         	if (bRetrievedEvents == true) {
         		// add map marker
         		placeMarkers();
         	}
-        });
-        
-        
+        });*/
 		
 }
 
@@ -103,37 +102,7 @@ function showEvents(){
 
 function createEvent(jsonTest){
 	//Changed the parameter to jsonTest that we will get from the formjs.js
-	// TODO: this should open the event form with latitude and longitude
-	
-	// test code to create a new event that can be used to save events from form
-	
-	// Admission Date: eMyVanycQSC
-	// Discharge Date: msodh3rEMJa
-	// Mode of discharge (string): fWIAEtYVEGk
-	// Diagnosis (string): K6uUAvq500H
-	
-/*	
-	var jsonTest = '{ \
-			  "program": "' + localStorage["programID"] + '", \
-			  "orgUnit": "DiszpKrYNg8", \
-			  "eventDate": "2013-11-20", \
-			  "status": "COMPLETED", \
-			  "storedBy": "admin", \
-			  "coordinate": { \
-				"latitude": "' + latitude + '", \
-				"longitude": "' + longitude + '" \
-			  }, \
-			  "dataValues": [ \
-			    { "dataElement": "qrur9Dvnyt5", "value": '+ "19" }, \
-			    { "dataElement": "oZg33kd9taw", "value": "Female" }, \
-			    { "dataElement": "msodh3rEMJa", "value": "2013-11-21" }, \
-				{ "dataElement": "eMyVanycQSC", "value": "2013-11-11" }, \
-				{ "dataElement": "fWIAEtYVEGk", "value": "Transferred" }, \
-				{ "dataElement": "K6uUAvq500H", "value": "A029 Salmonella infection, unspecified" } \
-			  ] \
-			}';
-*/	
-	//console.log( 'jsonObj = '+JSON.stringify(jsonTest));
+
 	$.ajax({
 		type:	'POST',
 		url: dhisAPI + '/api/events/',
@@ -147,9 +116,13 @@ function createEvent(jsonTest){
 			// on success retrieve all values again (this is a bit rough since it depends on user parameters, but demonstrates the idea).
 			var fromDate = $('#fromdate').datepicker().val();
 			var toDate = $('#todate').datepicker().val();
-			if (localStorage["programID"] !=  null && localStorage["orgUnitID"] !=  null)
+			var orgUnitVal = $('#selOrgUnit').val();
+			var programVal = $('#myProgramSelector').val();
+			//if (localStorage["programID"] !=  null && localStorage["orgUnitID"] !=  null)
+			if(orgUnitVal != "def" && programVal != "def")
 				retrieve_events(dhisAPI + "/api/events.json", localStorage["programID"], fromDate, toDate, localStorage["orgUnitID"]);
-			else if (localStorage["programID"] ==  null)
+			//else if (localStorage["programID"] ==  null)
+			else if(programVal === "def")	
 				alert("Please choose program first.");
 			else
 				alert("Please choose org unit first.");
@@ -271,14 +244,15 @@ function retrieve_events(url, program, startDate, endDate, orgUnit)
 	    $("#div-my-table").empty().append($table);
 	    
 	    // flag to track when to update markers
-	    bRetrievedEvents = true;
+	    // bRetrievedEvents = true;
+		placeMarkers();
 	});
 }
 
 function placeMarkers()
 {
 	// we only place markers if we actually got some new event (this is because markers are at the moment set when google map goes idle and this flag is true)
-	bRetrievedEvents = false;
+	// bRetrievedEvents = false;
 	
 	// TODO: add images to markers (maybe use url to image)
 	// var image = 'images/xxx.png';

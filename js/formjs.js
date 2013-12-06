@@ -147,14 +147,11 @@ function getCreateForm(){
 
 
 function getPrograms(){
-
-		//$.post("http://localhost:8080/dhis-web-commons/security/login.action",{j_username:"admin", j_password:"district"});
-	  $.getJSON(dhisAPI + "/api/programs.json", function(json) {
-		populateProgramForm(json);
+	  $.getJSON(dhisAPI + "/api/programs.json", function(json){
+			populateProgramForm(json);
                         
-		});
-	
-};
+		});	
+}
 
 
 function createForm(anArray){
@@ -176,12 +173,12 @@ values = anArray;
 		 
 	  $('#myForm').empty();
 	  
-	      			var initHtml = '<input type="text" id="eventdate" value="2013-11-5" />';/* '<div class="form-group">'
+	      			var initHtml =  '<script>$(function() { $( "#eventdate" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script><div class="form-group">'
 				+ '<label for="eventdate" class="col-sm-2 control-label">Event date</label>'
 				+	'<div class="col-sm-4">'
 				+		'<input type="text" class="form-control" id="eventdate">'
 				+	'</div>'
-			+ '</div>';	 */
+			+ '</div>';
 		  
 		  $('#myForm').append(initHtml);
 	  	  
@@ -211,7 +208,13 @@ values = anArray;
 
 		   else
 		   {
-				htmltext += '<input type="' + type +'" class="form-control" id="' + id + '" placeholder="' + name + '">';
+				if(type === "date"){
+					htmltext += '<script>$(function() { $( "#' + id + '" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script>';
+					htmltext += '<input type="text" class="form-control" ' + 'id="' + id + '">';
+				}
+				else{
+						htmltext += '<input type="' + type +'" class="form-control" id="' + id + '" placeholder="' + name + '">';
+				}
 			}
 		  
 		  htmltext += '</div>';
@@ -245,19 +248,19 @@ var json = {};
 
 	json.dataValues = [];
 	
+	
 	$.each(values, function(i, v){
 		 		       var id = v.id;						
 			item = {};
             item ["dataElement"] = id
             item ["value"] = $('#' + id).val();
             json.dataValues.push(item);
-		});
-	console.log(JSON.stringify(json));		   
+		});	   
 		createEvent(json);
 	  
 }
-function addCoordinates () {
-createForm(dataElementArray1),
-setLocation();
+function addCoordinates(){
+		createForm(dataElementArray1);
+		setLocation();
 }
 
