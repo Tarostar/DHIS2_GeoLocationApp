@@ -27,8 +27,19 @@ function populateOrgUnit(selectedProgramURL){
 		//JSON.sort(json.organisationUnits);
 		// loop through all events
 		sortJson(json.organisationUnits, "name");
-	    $.each(json.organisationUnits, function (i, orgUnit) {
-	    	$('#selOrgUnit').append($(document.createElement("option")).attr("value", orgUnit.id).text(orgUnit.name));
+		$.each(json.organisationUnits, function (i, orgUnit) {
+	    	if (orgUnit.name == "Ngelehun CHC")
+	    	{
+	    		// test hack to ensure this orgUnit is always selected as default as we know this typically has events
+	    		var option = document.createElement("option");
+	    	    option.text = orgUnit.name;
+	    	    option.value = orgUnit.id;
+	    	    $('#selOrgUnit').append(option);
+	    	    option.selected=true;    		
+	    		
+	    	}
+	    	else
+	    		$('#selOrgUnit').append($(document.createElement("option")).attr("value", orgUnit.id).text(orgUnit.name));
 	    });	
 	});
 	    
