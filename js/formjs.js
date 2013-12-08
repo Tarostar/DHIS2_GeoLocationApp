@@ -168,33 +168,21 @@ function getPrograms(){
 function createForm(anArray){
 values = anArray;
 	  //var json = [{"name":"Age", "type":"int", "id":"gsddkflh"}, {"name":"Gender", "type":"string", "options":["Male","Female","N/A"]}]; //, "type":"int"},{"name":"gender", "type":"string"}]';
-/* var htmltext += '<p ' + '>'+ '< label for ="latitude"' +'> ' +'Latitude '+'</'+'label>'+
-    	'<input type="number" name="latitude" id="latitude" value=0>'+
-    	'<label for="longitude">Longitude</label>' +
-    	'<input type="number" name="longitude" id="longitude" value=0>'+
-    	 +
-    	'</p> '
-		/* htmltext+= '<a href="#myForm">Click to go to the form</a>' + '<a id="myForm"></a>' 
-		var locCoor = '<div ' + '>'+ '< label for ="latitude"' +'> ' +'Latitude '+'</'+'label>'+
-    	'<input type="number" name="latitude" id="latitude" value=0>'+
-    	'<label for="longitude">Longitude</label>' +
-    	'<input type="number" name="longitude" id="longitude" value=0>'+
-    	 + 	'</div> ';
-		  $('#myLoc').append(locCoor); */
+
 		 
 	  $('#myForm').empty();
 	  
-	      			//var initHtml = 
-//					'<script>$(function() { $( "#eventdate" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script>
-
+	      
 			var initHtml =  '<div class="form-group">' 
 			    +'<label for="eventdate" class="col-sm-2 control-label">Event date</label>'
-				+	'<div class="col-sm-4">'
-				+		'<input type="date" name "eventdate" value="yyyy-mm-dd" class="form-control" id="eventdate">'
-				+	'</div>'
-			+ '</div>';
+				+	'<div class="col-sm-2">'
+				+		'<input type="date" name "eventdate" value="yyyy-mm-dd" class="form-control" id="eventdate">' 
+				   +	'</div>'
+			    + '</div>' ;
 		  
 		  $('#myForm').append(initHtml);
+		  var htmltext = '<div class="controlform-group">' ;
+		  htmltext += '<div class="col-sm-2">';	
 	  	  
 		  $.each(anArray, function(i, v){
 		  var name = v.name;
@@ -202,66 +190,61 @@ values = anArray;
 		  var id =v.id;
 		  
 	  
-		  var htmltext = '<div class="controlform-group">';
-		  htmltext += '<label for="input"' + name + ' class="col-sm-2 control-label">' + name + '</label>';
 		  
-		   htmltext += '<div class="col-sm-4">'
-						/* + '<div class="controls">'
-						+ '<input type="number" />'
-						+ '<p class="help-block"></p>' */
-						+ ' </div>';  
-		/*  if($('#' + id).val().type != type){ 
-		***  					  	<div class="control-group">
-									<label class="control-label">Type a number</label>
-									<div class="controls">
-									<input type="number" />
-      <p class="help-block"></p>
-    </div>
-  </div>********/
-			//TODO: find a way to check if the key options exist in the json v or not
+		   var htmltext = '<label for="input"' + name + ' class="col-sm-2 control-label">' + name + '</label>' ;
+		         //  htmltext += '<div class="col-sm-4">';
+				
+						
+		
  		  if (v.options != undefined)
 		  {
-				htmltext += '<select id="' + id + '" onChange>';				 
-				 
+		  	 htmltext += '<div class="col-sm-2">';	
+				htmltext += '<select id="' + id + '" onChange>';
+                		  //htmltext += '<div class="col-sm-4">';	
 				$.each(v.options, function(j, w){
+				//htmltext += '<div class="col-sm-4">';
+				 
 					htmltext += '<option value="' + w + '">' + w + '</option>';
-					
+			//		 htmltext += '</div>' ;
 				});
 				 htmltext += '</select>';
+				// htmltext+= '</div>' ;
 		  } 
 		  
-
-		   else	if(type === "date"){
-					// htmltext += '<script>$(function() { $( "#' + id + '" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script>';
+             // htmltext+= '<div class="col-xs-2">' ;
+   // <input type="text" class="form-control" placeholder=".col-xs-2">
+  		   else	if(type === "date"){
+		   htmltext += '<div class="col-sm-2">';
+		   
 					htmltext += '<input type="date"  value="yyyy-mm-dd" class="form-control" ' + 'id="' + id + '">'; 
-				
+			//	htmltext += '</div>';
 				
                  }	 
 				 
 			else if(type === "int") {
+			htmltext += '<div class="col-sm-2">';
 				        htmltext += '<input type="number"  value=0 class="form-control" ' + 'id="' + id + '">'; 
+				//		htmltext += '</div>';
 				      } 
 				
-/* 				 else
-					
-				{
-						htmltext += '<input type="' + type +'" class="form-control" id="' + id + '" placeholder="' + name + '">';
-				}  */
-			 
+		   htmltext += ' </div>'; 
+		   htmltext += '</div>';
+		 /*  htmltext += '<div class="col-sm-4">';
+		   htmltext += '</div>'; */
 		  
-		  htmltext += '</div>';
-		  htmltext += '</div>';
 		  
 		  $('#myForm').append(htmltext);
 	  });
-		 $('#myForm').append('<input id="savebtn" class="btn btn-primary" type="button" value="Save" onclick="saveEventData()">');
+	var httml='<div class="col-sm-2">';
+	    httml+= '<input id="savebtn" class="btn btn-primary" type="button" value="Save" onclick="saveEventData()">'
+	          + '</div>';
+		 $('#myForm').append(httml);
+		 //(' <input id="savebtn" class="btn btn-primary" type="button" value="Save" onclick="saveEventData()">');
 		     
 
 };
 
-
-
-		
+	
 
 
 function saveEventData(){

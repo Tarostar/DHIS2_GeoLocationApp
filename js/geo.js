@@ -128,7 +128,7 @@ function createEvent(jsonTest){
 				alert("Please choose org unit first.");
 		},
 		error:function(xhr, status, error){
-			alert((xhr.responseText));
+			//alert((xhr.responseText));
 		}
 	});
 }
