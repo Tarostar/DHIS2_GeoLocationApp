@@ -184,10 +184,13 @@ values = anArray;
 		 
 	  $('#myForm').empty();
 	  
-	      			var initHtml =  '<script>$(function() { $( "#eventdate" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script><div class="form-group">'
-				+ '<label for="eventdate" class="col-sm-2 control-label">Event date</label>'
+	      			//var initHtml = 
+//					'<script>$(function() { $( "#eventdate" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script>
+
+			var initHtml =  '<div class="form-group">' 
+			    +'<label for="eventdate" class="col-sm-2 control-label">Event date</label>'
 				+	'<div class="col-sm-4">'
-				+		'<input type="text" class="form-control" id="eventdate">'
+				+		'<input type="date" name "eventdate" value="yyyy-mm-dd" class="form-control" id="eventdate">'
 				+	'</div>'
 			+ '</div>';
 		  
@@ -199,11 +202,22 @@ values = anArray;
 		  var id =v.id;
 		  
 	  
-		  var htmltext = '<div class="form-group">';
+		  var htmltext = '<div class="controlform-group">';
 		  htmltext += '<label for="input"' + name + ' class="col-sm-2 control-label">' + name + '</label>';
 		  
-		  htmltext += '<div class="col-sm-4">';
-		
+		   htmltext += '<div class="col-sm-4">'
+						/* + '<div class="controls">'
+						+ '<input type="number" />'
+						+ '<p class="help-block"></p>' */
+						+ ' </div>';  
+		/*  if($('#' + id).val().type != type){ 
+		***  					  	<div class="control-group">
+									<label class="control-label">Type a number</label>
+									<div class="controls">
+									<input type="number" />
+      <p class="help-block"></p>
+    </div>
+  </div>********/
 			//TODO: find a way to check if the key options exist in the json v or not
  		  if (v.options != undefined)
 		  {
@@ -217,16 +231,23 @@ values = anArray;
 		  } 
 		  
 
-		   else
-		   {
-				if(type === "date"){
-					htmltext += '<script>$(function() { $( "#' + id + '" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script>';
-					htmltext += '<input type="text" class="form-control" ' + 'id="' + id + '">';
-				}
-				else{
+		   else	if(type === "date"){
+					// htmltext += '<script>$(function() { $( "#' + id + '" ).datepicker({ dateFormat: "yy-mm-dd", defaultDate: new Date()}); })</script>';
+					htmltext += '<input type="date"  value="yyyy-mm-dd" class="form-control" ' + 'id="' + id + '">'; 
+				
+				
+                 }	 
+				 
+			else if(type === "int") {
+				        htmltext += '<input type="number"  value=0 class="form-control" ' + 'id="' + id + '">'; 
+				      } 
+				
+/* 				 else
+					
+				{
 						htmltext += '<input type="' + type +'" class="form-control" id="' + id + '" placeholder="' + name + '">';
-				}
-			}
+				}  */
+			 
 		  
 		  htmltext += '</div>';
 		  htmltext += '</div>';
@@ -246,27 +267,44 @@ values = anArray;
 function saveEventData(){
 
 var json = {};
-
+   
 			  json["program"]= $('#myProgramSelector').val();
-			  json["orgUnit"]= $('#selOrgUnit').val();
-			  json["eventDate"]= $('#eventdate').val();
+ 			  json["orgUnit"]= $('#selOrgUnit').val();
+			  json["eventDate"]= $('#eventdate').val(); 
+			 // if(if($('#' + id).val() != 'waaaw')
+			  //$('#eventdate').val();
 			  json["status"]= "COMPLETED";
 			  json["storedBy"]= "admin";
 				item = {};
 				item ["latitude"] = $('#latitude').val();
 				item ["longitude"] = $('#longitude').val();
 			  json["coordinate"] = item;
+			   
+			   /*  json.dV0nC7GR48Q.push({"program"]= $('#myProgramSelector').val();
+			 json["orgUnit"]= $('#selOrgUnit').val();
+			  json["eventDate"]= $('#eventdate').val();
+			  json["status"]= "COMPLETED";
+			  json["storedBy"]= "admin";
+				item = {};
+				item ["latitude"] = $('#latitude').val();
+				item ["longitude"] = $('#longitude').val();
+			  json["coordinate"] = item;*/
 
 	json.dataValues = [];
-	
+
 	
 	$.each(values, function(i, v){
-		 		       var id = v.id;						
+		 		       var id = v.id;
+                     //  var type = v.type; 					   
 			item = {};
             item ["dataElement"] = id
             item ["value"] = $('#' + id).val();
+			 item ["dataElement"] = id
+			
+			/* if($('#' + id).val().type != type){ 
+			alert('type invalid')} */
             json.dataValues.push(item);
-		});	   
+		});	  
 		createEvent(json);
 	  
 }
