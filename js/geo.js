@@ -112,17 +112,15 @@ function createEvent(jsonTest){
 			'Accept' : 'application/json'
 		},
 		success:function(json){
-		alert('json '+ json);
+		
 			// on success retrieve all values again (this is a bit rough since it depends on user parameters, but demonstrates the idea).
 			var fromDate = $('#fromdate').datepicker().val();
 			var toDate = $('#todate').datepicker().val();
 			var orgUnitVal = $('#selOrgUnit').val();
 			var programVal = $('#myProgramSelector').val();
-			//if (localStorage["programID"] !=  null && localStorage["orgUnitID"] !=  null)
-			if(orgUnitVal != "def" && programVal != "def")
+			if (localStorage["programID"] !=  null && localStorage["orgUnitID"] !=  null)
 				retrieve_events(dhisAPI + "/api/events.json", localStorage["programID"], fromDate, toDate, localStorage["orgUnitID"]);
-			//else if (localStorage["programID"] ==  null)
-			else if(programVal === "def")	
+			else if (localStorage["programID"] ==  null)	
 				alert("Please choose program first.");
 			else
 				alert("Please choose org unit first.");

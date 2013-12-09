@@ -16,7 +16,6 @@ function populateProgramForm(data){
 			// value: id / href
 			$('#myProgramSelector').append($(document.createElement("option")).
                         attr("value",val.id).text(val.name));
-						//alert(val.href + ".json");
 		}
 	});
 };
@@ -24,8 +23,6 @@ function populateOrgUnit(selectedProgramURL){
 	
 	$.getJSON(selectedProgramURL, function(json){
 		
-		//JSON.sort(json.organisationUnits);
-		// loop through all events
 		sortJson(json.organisationUnits, "name");
 		$.each(json.organisationUnits, function (i, orgUnit) {
 	    	if (orgUnit.name == "Ngelehun CHC")
